@@ -34,6 +34,34 @@ The local folder name must be exactly:
 genefunk2090-dnd5e
 ```
 
+## URL Install
+
+Foundry's **Install Module** URL flow only works after a GitHub release has these assets attached:
+
+- `module.json`
+- `genefunk2090-dnd5e.zip`
+
+Build those assets with:
+
+```powershell
+.\tools\package-release.ps1
+```
+
+Then create a GitHub release and upload:
+
+```text
+dist/module.json
+dist/genefunk2090-dnd5e.zip
+```
+
+After the release exists, use this manifest URL in Foundry:
+
+```text
+https://github.com/mosio/genefunk2090/releases/latest/download/module.json
+```
+
+Using the GitHub repository page URL or a release URL without uploaded assets will fail with an invalid manifest response.
+
 ## Developer Console Helpers
 
 Set a GeneFunk profile on a selected token's actor:
