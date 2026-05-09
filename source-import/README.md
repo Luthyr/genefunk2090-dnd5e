@@ -7,7 +7,7 @@ Do not distribute copyrighted book text inside the public module unless you have
 Suggested private workflow:
 1. Use the GeneFunk PDFs as reference.
 2. Manually create Foundry Items in a local world.
-3. Export Items into the module compendia.
+3. Export Items into real Foundry module compendia after the data model is stable.
 4. Keep only the resulting game data you have rights to distribute.
 5. For personal-use-only modules, keep the module private.
 Source import files are table-safe placeholders for creating world Items during development.
@@ -16,9 +16,10 @@ Use `macros/import-starter-content.js` or this console command in an active dnd5
 
 ```js
 await GeneFunk2090.importStarterContent();
+await GeneFunk2090.importStarterActors();
 ```
 
-The JSON in this folder is not a Foundry compendium database and should not be declared under `packs` in `module.json`.
+The JSON in this folder is not a Foundry compendium database and should not be declared under `packs` in `module.json`. See `docs/compendium-workflow.md` for the export process.
 
 Current files:
 

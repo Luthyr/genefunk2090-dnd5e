@@ -10,8 +10,7 @@ This is an MVP foundation. It does not include copyrighted book text or extracte
 
 - A valid Foundry module manifest
 - D&D 5e system dependency
-- Placeholder class and gear/category compendium packs
-- Placeholder sample actor compendium
+- Source JSON placeholders for starter Items and Actors
 - Starter script hooks
 - Actor profile helper flags
 - Item categorization helper flags
@@ -81,19 +80,14 @@ Tag an item:
 await GeneFunk2090.tagItem(actor.items.getName("Example Item"), "cyberware");
 ```
 
-Import placeholder starter Items into the current world:
+Import placeholder starter Items and Actors into the current world:
 
 ```js
 await GeneFunk2090.importStarterContent();
+await GeneFunk2090.importStarterActors();
 ```
 
 This creates placeholder class Items for Biohacker, Codehacker, Crook, Engineer, Gunfighter, Hardcase, Samurai, and Suit, plus one placeholder Item for each starter category. These are not book text and do not contain real mechanics yet.
-
-On first GM activation, the module also seeds the module compendia:
-
-- **GeneFunk 2090 Classes**
-- **GeneFunk 2090 Gear and Categories**
-- **GeneFunk 2090 Sample Actors**
 
 The gameplay placeholder pass adds one playable Gunfighter class shell, three placeholder firearms, one armor item, three dnd5e spell-based hacks, one cyberware item, one sample NPC, and one sample player character. It also adds a lightweight GeneFunk actor panel for genotype, occupation, faction, credits, and cyberware load.
 
@@ -117,12 +111,15 @@ Create Foundry script macros by copying from:
 
 1. Install or update the module in a Foundry VTT v13 world using the official `dnd5e` system.
 2. Log in as a GM and enable **GeneFunk 2090 for D&D 5e**.
-3. Open the Compendium sidebar and confirm these packs exist:
-   - **GeneFunk 2090 Classes**
-   - **GeneFunk 2090 Gear and Categories**
-   - **GeneFunk 2090 Sample Actors**
-4. Confirm **GeneFunk 2090 Classes** contains `Gunfighter`.
-5. Confirm **GeneFunk 2090 Gear and Categories** contains:
+3. Run the starter import helpers in the browser console as GM:
+
+   ```js
+   await GeneFunk2090.importStarterContent();
+   await GeneFunk2090.importStarterActors();
+   ```
+
+4. Confirm the world Items directory contains `Gunfighter`.
+5. Confirm the world Items directory contains:
    - `Placeholder Light Pistol`
    - `Placeholder Burst Rifle`
    - `Placeholder Heavy Sidearm`
@@ -131,18 +128,12 @@ Create Foundry script macros by copying from:
    - `Placeholder System Jam`
    - `Placeholder Firewall Patch`
    - `Placeholder Optic Implant`
-6. Confirm **GeneFunk 2090 Sample Actors** contains:
+6. Confirm the world Actors directory contains:
    - `GeneFunk Placeholder NPC`
    - `GeneFunk Placeholder PC`
 7. Import or open the sample PC. The actor sheet should show the GeneFunk panel with genotype, occupation, faction, credits, and cyberware load.
 8. Drag a placeholder firearm onto an actor, open the item sheet, and click **Spend Ammo**. The item's `uses.value` should decrease by 1.
 9. Use the starter macros to set a profile, tag an item, and print the profile to chat.
-
-If the compendia do not seed automatically, run this in the browser console as a GM:
-
-```js
-await GeneFunk2090.seedStarterCompendia();
-```
 
 ## Suggested MVP Content Order
 
@@ -201,4 +192,4 @@ Avoid initially:
 
 Create the first compendium entries manually in a test world, export them into the module packs, then add automation only after the content model feels stable.
 
-The current compendia are seeded from source JSON on first GM activation. Once the data model stabilizes, export real Foundry compendium databases from a test world and replace the source-seeded placeholders.
+The current starter data imports from source JSON into a development world. Once the data model stabilizes, export real Foundry compendium databases from a test world and add valid pack definitions. See `docs/compendium-workflow.md`.

@@ -43,40 +43,5 @@
       "name": "English",
       "path": "lang/en.json"
     }
-  ],
-  "packs": [
-    {
-      "name": "classes",
-      "label": "GeneFunk 2090 Classes",
-      "path": "packs/classes",
-      "type": "Item",
-      "system": "dnd5e",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "name": "equipment",
-      "label": "GeneFunk 2090 Gear and Categories",
-      "path": "packs/equipment",
-      "type": "Item",
-      "system": "dnd5e",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "name": "actors",
-      "label": "GeneFunk 2090 Sample Actors",
-      "path": "packs/actors",
-      "type": "Actor",
-      "system": "dnd5e",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    }
   ]
 }

@@ -11,9 +11,6 @@
 
 const MODULE_ID = "genefunk2090-dnd5e";
 const ITEM_CATEGORIES = new Set(["hack", "cyberware", "bioware", "modern-weapon", "armor", "drug", "tool", "equipment"]);
-const STARTER_CLASS_PACK = `${MODULE_ID}.classes`;
-const STARTER_EQUIPMENT_PACK = `${MODULE_ID}.equipment`;
-const STARTER_ACTOR_PACK = `${MODULE_ID}.actors`;
 
 Hooks.once("init", () => {
   console.log(`${MODULE_ID} | Initializing`);
@@ -54,12 +51,6 @@ Hooks.once("ready", () => {
 
   globalThis.GeneFunk2090 = createHelpers();
   globalThis.Genefunk2090 = globalThis.GeneFunk2090;
-
-  if (game.user?.isGM) {
-    seedStarterCompendia().catch((error) => {
-      console.warn(`${MODULE_ID} | Unable to seed starter compendia`, error);
-    });
-  }
 });
 
 /**
@@ -192,7 +183,7 @@ function createHelpers() {
     tagItem,
     printActorProfileToChat,
     importStarterContent,
-    seedStarterCompendia,
+    importStarterActors,
     spendAmmo
   };
 }
@@ -265,45 +256,19 @@ async function importStarterContent() {
   return created;
 }
 
-async function seedStarterCompendia() {
-  const items = await loadStarterItems();
+async function importStarterActors() {
   const actors = await loadStarterActors();
-  const classes = items.filter((item) => item.flags?.[MODULE_ID]?.contentType === "class");
-  const equipment = items.filter((item) => item.flags?.[MODULE_ID]?.category);
+  const existingNames = new Set(game.actors.contents.map((actor) => actor.name));
+  const toCreate = actors.filter((actor) => !existingNames.has(actor.name));
 
-  const created = [
-    ...(await seedPack(STARTER_CLASS_PACK, classes)),
-    ...(await seedPack(STARTER_EQUIPMENT_PACK, equipment)),
-    ...(await seedPack(STARTER_ACTOR_PACK, actors, Actor))
-  ];
-
-  if (created.length) {
-    console.log(`${MODULE_ID} | Seeded ${created.length} placeholder compendium items.`);
-  }
-
-  return created;
-}
-
-async function seedPack(packId, documents, documentClass = Item) {
-  const pack = game.packs.get(packId);
-  if (!pack) {
-    console.warn(`${MODULE_ID} | Missing compendium pack: ${packId}`);
+  if (!toCreate.length) {
+    ui.notifications?.info("GeneFunk starter actors already exist in this world.");
     return [];
   }
 
-  await pack.getIndex({ fields: ["name"] });
-  const existingNames = new Set([...pack.index].map((entry) => entry.name));
-  const toCreate = documents.filter((document) => !existingNames.has(document.name));
-  if (!toCreate.length) return [];
-
-  const wasLocked = pack.locked;
-  if (wasLocked) await pack.configure({ locked: false });
-
-  try {
-    return await documentClass.createDocuments(toCreate, { pack: pack.collection });
-  } finally {
-    if (wasLocked) await pack.configure({ locked: true });
-  }
+  const created = await Actor.createDocuments(toCreate);
+  ui.notifications?.info(`Created ${created.length} GeneFunk starter actors.`);
+  return created;
 }
 
 async function loadStarterItems() {

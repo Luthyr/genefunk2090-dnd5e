@@ -54,8 +54,7 @@ Commit and push the repository source files normally. The important release-supp
 - `styles/genefunk.css`
 - `lang/en.json`
 - `macros/`
-- `packs/`
 - `docs/`
 - `source-import/`
 
-The starter compendia are seeded from `source-import/starter-items.json` on first GM activation. After editing entries in Foundry, export real compendium databases before replacing the source-driven placeholders.
+Starter data is stored as source JSON and imported into a development world with console helpers. Do not add `packs` to `module.json` until real Foundry-generated compendium data exists. See `docs/compendium-workflow.md`.
