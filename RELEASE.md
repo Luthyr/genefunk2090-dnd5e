@@ -1,10 +1,42 @@
-# Release Upload Checklist
+# Release Workflow
 
-Use this when publishing a GitHub release for Foundry's **Install Module** URL flow.
+GitHub Actions publishes Foundry release assets when you push a version tag.
 
-## Build Assets
+## Tag-Based Release
 
-From the repository root:
+1. Update `module.json`.
+
+   The version and URLs must all use the same tag:
+
+   ```json
+   {
+     "version": "0.1.5",
+     "manifest": "https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.5/module.json",
+     "download": "https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.5/genefunk2090-dnd5e.zip"
+   }
+   ```
+
+2. Commit and push the source files.
+
+3. Create and push the matching tag:
+
+   ```powershell
+   git tag v0.1.5
+   git push origin v0.1.5
+   ```
+
+4. GitHub Actions will build and upload:
+
+   ```text
+   module.json
+   genefunk2090-dnd5e.zip
+   ```
+
+The workflow fails if the pushed tag does not match `module.json` version or release URLs.
+
+## Manual Local Build
+
+You can still build assets locally for testing:
 
 ```powershell
 .\tools\package-release.ps1
@@ -17,27 +49,20 @@ dist/module.json
 dist/genefunk2090-dnd5e.zip
 ```
 
-The `dist/` folder is intentionally ignored by Git. Upload these files as GitHub release assets instead of committing them.
+The `dist/` folder is intentionally ignored by Git.
 
-## GitHub Release
+## Foundry Install URL
 
-Create a public, non-draft GitHub release matching the `version` in `module.json`, for example `v0.1.4`, then attach exactly these two files:
+For a specific release:
 
 ```text
-dist/module.json
-dist/genefunk2090-dnd5e.zip
+https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.5/module.json
 ```
 
-After upload, this URL must open or download JSON in a browser:
+For the latest normal release:
 
 ```text
-https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.4/module.json
-```
-
-Foundry install URL:
-
-```text
-https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.4/module.json
+https://github.com/Luthyr/genefunk2090-dnd5e/releases/latest/download/module.json
 ```
 
 If Foundry reports `Failed to fetch package manifest`, the release asset is missing, private, draft-only, or the URL is not reachable. The `releases/latest` URL only works for normal releases, not prereleases.
