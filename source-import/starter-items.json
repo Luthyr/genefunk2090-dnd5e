@@ -266,7 +266,7 @@
     "img": "icons/svg/combat.svg",
     "system": {
       "description": {
-        "value": "<p>Placeholder modern firearm. Uses generic dnd5e weapon fields and simple ammo tracking.</p>"
+        "value": "<p>Placeholder modern firearm. Uses generic dnd5e weapon fields, magazine uses, reserve ammo, and reload support.</p>"
       },
       "identifier": "placeholder-light-pistol",
       "quantity": 1,
@@ -283,7 +283,12 @@
       "genefunk2090-dnd5e": {
         "category": "modern-weapon",
         "placeholder": true,
-        "ammoTracking": "uses"
+        "ammoTracking": "uses",
+        "ammo": {
+          "magazineSize": 12,
+          "reserve": 36,
+          "reload": "action"
+        }
       }
     }
   },
@@ -293,7 +298,7 @@
     "img": "icons/svg/combat.svg",
     "system": {
       "description": {
-        "value": "<p>Placeholder modern firearm. Uses generic dnd5e weapon fields and simple ammo tracking.</p>"
+        "value": "<p>Placeholder modern firearm. Uses generic dnd5e weapon fields, magazine uses, reserve ammo, and reload support.</p>"
       },
       "identifier": "placeholder-burst-rifle",
       "quantity": 1,
@@ -310,7 +315,12 @@
       "genefunk2090-dnd5e": {
         "category": "modern-weapon",
         "placeholder": true,
-        "ammoTracking": "uses"
+        "ammoTracking": "uses",
+        "ammo": {
+          "magazineSize": 30,
+          "reserve": 90,
+          "reload": "action"
+        }
       }
     }
   },
@@ -320,7 +330,7 @@
     "img": "icons/svg/combat.svg",
     "system": {
       "description": {
-        "value": "<p>Placeholder modern firearm. Uses generic dnd5e weapon fields and simple ammo tracking.</p>"
+        "value": "<p>Placeholder modern firearm. Uses generic dnd5e weapon fields, magazine uses, reserve ammo, and reload support.</p>"
       },
       "identifier": "placeholder-heavy-sidearm",
       "quantity": 1,
@@ -337,7 +347,12 @@
       "genefunk2090-dnd5e": {
         "category": "modern-weapon",
         "placeholder": true,
-        "ammoTracking": "uses"
+        "ammoTracking": "uses",
+        "ammo": {
+          "magazineSize": 8,
+          "reserve": 24,
+          "reload": "action"
+        }
       }
     }
   },

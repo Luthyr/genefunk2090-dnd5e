@@ -23,7 +23,62 @@
       "name": "GeneFunk Placeholder NPC",
       "actorLink": false
     },
-    "items": [],
+    "items": [
+      {
+        "name": "Placeholder Heavy Sidearm",
+        "type": "weapon",
+        "img": "icons/svg/combat.svg",
+        "system": {
+          "description": {
+            "value": "<p>Placeholder NPC firearm with magazine and reserve ammo tracking.</p>"
+          },
+          "identifier": "placeholder-heavy-sidearm",
+          "quantity": 1,
+          "uses": {
+            "value": 8,
+            "max": "8",
+            "per": "charges"
+          },
+          "damage": {
+            "parts": [["1d8", "piercing"]]
+          }
+        },
+        "flags": {
+          "genefunk2090-dnd5e": {
+            "category": "modern-weapon",
+            "placeholder": true,
+            "ammoTracking": "uses",
+            "ammo": {
+              "magazineSize": 8,
+              "reserve": 16,
+              "reload": "action"
+            }
+          }
+        }
+      },
+      {
+        "name": "Placeholder Tactical Armor",
+        "type": "equipment",
+        "img": "icons/svg/shield.svg",
+        "system": {
+          "description": {
+            "value": "<p>Placeholder armor for sample NPC testing.</p>"
+          },
+          "identifier": "placeholder-tactical-armor",
+          "quantity": 1,
+          "armor": {
+            "value": 12,
+            "type": "light"
+          }
+        },
+        "flags": {
+          "genefunk2090-dnd5e": {
+            "category": "armor",
+            "placeholder": true
+          }
+        }
+      }
+    ],
     "flags": {
       "genefunk2090-dnd5e": {
         "profile": {
@@ -59,7 +114,131 @@
       "name": "GeneFunk Placeholder PC",
       "actorLink": true
     },
-    "items": [],
+    "items": [
+      {
+        "name": "Gunfighter",
+        "type": "class",
+        "img": "icons/svg/book.svg",
+        "system": {
+          "description": {
+            "value": "<p>Complete placeholder Gunfighter class shell for testing. No book text included.</p>"
+          },
+          "identifier": "gunfighter",
+          "levels": 1,
+          "hitDice": "d10",
+          "spellcasting": {
+            "progression": "none"
+          }
+        },
+        "flags": {
+          "genefunk2090-dnd5e": {
+            "contentType": "class",
+            "placeholder": true,
+            "playable": true
+          }
+        }
+      },
+      {
+        "name": "Placeholder Light Pistol",
+        "type": "weapon",
+        "img": "icons/svg/combat.svg",
+        "system": {
+          "description": {
+            "value": "<p>Placeholder PC firearm with magazine and reserve ammo tracking.</p>"
+          },
+          "identifier": "placeholder-light-pistol",
+          "quantity": 1,
+          "uses": {
+            "value": 12,
+            "max": "12",
+            "per": "charges"
+          },
+          "damage": {
+            "parts": [["1d6", "piercing"]]
+          }
+        },
+        "flags": {
+          "genefunk2090-dnd5e": {
+            "category": "modern-weapon",
+            "placeholder": true,
+            "ammoTracking": "uses",
+            "ammo": {
+              "magazineSize": 12,
+              "reserve": 36,
+              "reload": "action"
+            }
+          }
+        }
+      },
+      {
+        "name": "Placeholder Tactical Armor",
+        "type": "equipment",
+        "img": "icons/svg/shield.svg",
+        "system": {
+          "description": {
+            "value": "<p>Placeholder armor for sample PC testing.</p>"
+          },
+          "identifier": "placeholder-tactical-armor",
+          "quantity": 1,
+          "armor": {
+            "value": 12,
+            "type": "light"
+          }
+        },
+        "flags": {
+          "genefunk2090-dnd5e": {
+            "category": "armor",
+            "placeholder": true
+          }
+        }
+      },
+      {
+        "name": "Placeholder Signal Spike",
+        "type": "spell",
+        "img": "icons/svg/aura.svg",
+        "system": {
+          "description": {
+            "value": "<p>Placeholder hack represented as a dnd5e spell item.</p>"
+          },
+          "identifier": "placeholder-signal-spike",
+          "level": 1,
+          "school": "enc",
+          "activation": {
+            "type": "action",
+            "cost": 1
+          },
+          "duration": {
+            "value": 1,
+            "units": "round"
+          }
+        },
+        "flags": {
+          "genefunk2090-dnd5e": {
+            "category": "hack",
+            "placeholder": true
+          }
+        }
+      },
+      {
+        "name": "Placeholder Optic Implant",
+        "type": "equipment",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "description": {
+            "value": "<p>Placeholder cyberware item for sample PC testing.</p>"
+          },
+          "identifier": "placeholder-optic-implant",
+          "quantity": 1
+        },
+        "flags": {
+          "genefunk2090-dnd5e": {
+            "category": "cyberware",
+            "placeholder": true,
+            "load": 1
+          }
+        }
+      }
+    ],
     "flags": {
       "genefunk2090-dnd5e": {
         "profile": {

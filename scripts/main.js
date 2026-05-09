@@ -157,11 +157,22 @@ function injectItemNote(app, html) {
   note.innerHTML = `<strong>GeneFunk Category:</strong> ${escapeHtml(category)}`;
 
   if (category === "modern-weapon") {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.textContent = "Spend Ammo";
-    button.addEventListener("click", () => spendAmmo(item));
-    note.append(button);
+    const state = getAmmoState(item);
+    const status = document.createElement("span");
+    status.className = "genefunk-ammo-status";
+    status.textContent = ` Magazine ${state.current}/${state.magazineSize}, reserve ${state.reserve}`;
+
+    const spendButton = document.createElement("button");
+    spendButton.type = "button";
+    spendButton.textContent = "Spend Ammo";
+    spendButton.addEventListener("click", () => spendAmmo(item));
+
+    const reloadButton = document.createElement("button");
+    reloadButton.type = "button";
+    reloadButton.textContent = "Reload";
+    reloadButton.addEventListener("click", () => reloadAmmo(item));
+
+    note.append(status, spendButton, reloadButton);
   }
 
   const target = root.querySelector(".window-content form") || root.querySelector(".window-content") || root.querySelector("form") || root;
@@ -184,7 +195,9 @@ function createHelpers() {
     printActorProfileToChat,
     importStarterContent,
     importStarterActors,
-    spendAmmo
+    getAmmoState,
+    spendAmmo,
+    reloadAmmo
   };
 }
 
@@ -223,11 +236,12 @@ async function tagItem(item, category = "equipment") {
 async function spendAmmo(item) {
   if (!item) throw new Error("No item provided.");
 
-  const usesValue = Number(foundry.utils.getProperty(item, "system.uses.value"));
-  if (Number.isFinite(usesValue) && usesValue > 0) {
-    await item.update({ "system.uses.value": usesValue - 1 });
-    ui.notifications?.info(`${item.name} ammo: ${usesValue - 1}`);
-    return usesValue - 1;
+  const state = getAmmoState(item);
+  if (state.current > 0) {
+    const nextCurrent = state.current - 1;
+    await item.update({ "system.uses.value": nextCurrent });
+    ui.notifications?.info(`${item.name} magazine: ${nextCurrent}/${state.magazineSize}`);
+    return nextCurrent;
   }
 
   const quantity = Number(foundry.utils.getProperty(item, "system.quantity"));
@@ -239,6 +253,46 @@ async function spendAmmo(item) {
 
   ui.notifications?.warn(`${item.name} has no ammo or quantity remaining.`);
   return 0;
+}
+
+async function reloadAmmo(item) {
+  if (!item) throw new Error("No item provided.");
+
+  const state = getAmmoState(item);
+  const needed = Math.max(state.magazineSize - state.current, 0);
+  const loaded = Math.min(needed, state.reserve);
+
+  if (!loaded) {
+    ui.notifications?.warn(`${item.name} cannot reload.`);
+    return state;
+  }
+
+  const nextCurrent = state.current + loaded;
+  const nextReserve = state.reserve - loaded;
+  await item.update({ "system.uses.value": nextCurrent });
+  await item.setFlag(MODULE_ID, "ammo", {
+    ...state.flag,
+    magazineSize: state.magazineSize,
+    reserve: nextReserve
+  });
+
+  ui.notifications?.info(`${item.name} reloaded: ${nextCurrent}/${state.magazineSize}, reserve ${nextReserve}.`);
+  return getAmmoState(item);
+}
+
+function getAmmoState(item) {
+  const flag = item?.getFlag(MODULE_ID, "ammo") ?? {};
+  const current = Number(foundry.utils.getProperty(item, "system.uses.value") ?? 0);
+  const usesMax = Number(foundry.utils.getProperty(item, "system.uses.max") ?? 0);
+  const magazineSize = Number(flag.magazineSize ?? usesMax ?? current ?? 0);
+  const reserve = Number(flag.reserve ?? 0);
+
+  return {
+    current: Number.isFinite(current) ? current : 0,
+    magazineSize: Number.isFinite(magazineSize) ? magazineSize : 0,
+    reserve: Number.isFinite(reserve) ? reserve : 0,
+    flag
+  };
 }
 
 async function importStarterContent() {

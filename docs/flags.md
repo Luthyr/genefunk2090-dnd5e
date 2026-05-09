@@ -81,7 +81,26 @@ Example:
 
 The item remains a normal dnd5e item. Damage formulas, activation, uses, equipment state, and rolls should continue to use dnd5e fields unless a later feature has a documented reason to add a flag.
 
-Modern firearm placeholders use normal dnd5e `system.uses.value` for simple ammunition tracking. The helper `GeneFunk2090.spendAmmo(item)` decrements uses first, then falls back to `system.quantity`.
+Modern firearm placeholders use normal dnd5e `system.uses.value` for current magazine ammo. Reserve ammo and magazine metadata live in `flags.genefunk2090-dnd5e.ammo`.
+
+Example:
+
+```json
+{
+  "flags": {
+    "genefunk2090-dnd5e": {
+      "category": "modern-weapon",
+      "ammo": {
+        "magazineSize": 12,
+        "reserve": 36,
+        "reload": "action"
+      }
+    }
+  }
+}
+```
+
+The helper `GeneFunk2090.spendAmmo(item)` decrements `system.uses.value`. The helper `GeneFunk2090.reloadAmmo(item)` moves rounds from reserve into the magazine.
 
 ## Settings
 
