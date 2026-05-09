@@ -1,0 +1,30 @@
+.genefunk-sheet-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.35rem;
+  margin-left: 0.5rem;
+  padding: 0 0.45rem;
+  border: 1px solid rgba(41, 128, 185, 0.65);
+  border-radius: 4px;
+  background: rgba(41, 128, 185, 0.12);
+  color: #1f5f89;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.genefunk-chat-profile dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 0.65rem;
+  margin: 0;
+}
+
+.genefunk-chat-profile dt {
+  font-weight: 700;
+}
+
+.genefunk-chat-profile dd {
+  margin: 0;
+}
