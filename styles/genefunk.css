@@ -115,7 +115,14 @@
 
 .genefunk-ammo-panel li {
   display: grid;
-  grid-template-columns: minmax(120px, 1fr) auto auto auto;
+  grid-template-columns: minmax(120px, 1fr) auto auto auto minmax(160px, auto);
   gap: 0.5rem;
   align-items: center;
+}
+
+.genefunk-ammo-row-controls {
+  display: inline-flex;
+  gap: 0.3rem;
+  align-items: center;
+  flex-wrap: wrap;
 }

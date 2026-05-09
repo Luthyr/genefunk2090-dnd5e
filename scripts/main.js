@@ -85,6 +85,15 @@ Hooks.on("renderItemSheetV2", (app, element) => {
   injectItemNote(app, element);
 });
 
+Hooks.on("renderItemSheet5e", (app, html) => {
+  injectItemNote(app, html);
+});
+
+Hooks.on("renderActorSheet5e", (app, html) => {
+  injectActorBadge(app, html);
+  injectActorPanel(app, html);
+});
+
 function injectActorBadge(app, html) {
   if (!game.settings.get(MODULE_ID, "showSheetBadges")) return;
 

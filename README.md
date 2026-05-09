@@ -4,7 +4,7 @@ A Foundry VTT add-on module scaffold for using GeneFunk 2090-style cyberpunk/bio
 
 ## Current Status
 
-Version: 0.1.5 firearm foundation pass
+Version: 0.1.6 firearm foundation pass
 
 This is an MVP foundation. It does not include copyrighted book text or extracted PDF content. It provides:
 
@@ -57,7 +57,7 @@ dist/genefunk2090-dnd5e.zip
 After the release exists, use this manifest URL in Foundry:
 
 ```text
-https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.5/module.json
+https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.6/module.json
 ```
 
 Using the GitHub repository page URL or a release URL without uploaded assets will fail with an invalid manifest response. GitHub's `latest` release URL does not work for prereleases.
@@ -146,7 +146,7 @@ Create Foundry script macros by copying from:
 12. Open a placeholder hack item such as `Placeholder Signal Spike`. It should remain a normal dnd5e spell item while showing the GeneFunk `hack` category note.
 13. Use the starter macros to set a profile, tag an item, and print the profile to chat.
 
-The actor sheet also displays a firearm ammo panel when the actor owns modern-weapon Items. This panel is display-only and does not replace dnd5e item rolls.
+The actor sheet also displays a firearm ammo panel when the actor owns modern-weapon Items. Use that panel to spend ammo, reload, and toggle burst fire even if your installed dnd5e item sheet does not show the item-sheet controls. These controls do not replace dnd5e item rolls.
 
 Updating the module does not automatically create world Actors. The sample NPC and PC are source JSON placeholders until imported with `GeneFunk2090.importStarterAll()` or `macros/import-starter-content.js`.
 

@@ -145,6 +145,29 @@ export function renderActorAmmoPanel(actor, moduleId) {
       <span>Reserve ${state.reserve}</span>
       <span>${state.burstEnabled ? `Burst ${state.burstSize}` : "Single"}</span>
     `;
+
+    const controls = document.createElement("span");
+    controls.className = "genefunk-ammo-row-controls";
+
+    const spendButton = document.createElement("button");
+    spendButton.type = "button";
+    spendButton.textContent = state.burstEnabled ? `Fire ${state.burstSize}` : "Spend";
+    spendButton.addEventListener("click", () => spendAmmo(item, moduleId));
+
+    const reloadButton = document.createElement("button");
+    reloadButton.type = "button";
+    reloadButton.textContent = "Reload";
+    reloadButton.addEventListener("click", () => reloadAmmo(item, moduleId));
+
+    const burstLabel = document.createElement("label");
+    burstLabel.className = "genefunk-burst-toggle";
+    burstLabel.innerHTML = `<input type="checkbox" ${state.burstEnabled ? "checked" : ""}> Burst`;
+    burstLabel.querySelector("input").addEventListener("change", (event) => {
+      setBurstFire(item, moduleId, event.currentTarget.checked);
+    });
+
+    controls.append(spendButton, reloadButton, burstLabel);
+    row.append(controls);
     list.append(row);
   }
 
