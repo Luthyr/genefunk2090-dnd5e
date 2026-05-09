@@ -4,35 +4,24 @@ GitHub Actions publishes Foundry release assets when you push a version tag.
 
 ## Tag-Based Release
 
-1. Update `module.json`.
+1. Commit and push your source changes.
 
-   The version and URLs must all use the same tag:
+2. Create a GitHub release or push a tag such as:
 
-   ```json
-   {
-     "version": "0.1.5",
-     "manifest": "https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.5/module.json",
-     "download": "https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.5/genefunk2090-dnd5e.zip"
-   }
+   ```text
+   v0.1.5
    ```
 
-2. Commit and push the source files.
-
-3. Create and push the matching tag:
-
-   ```powershell
-   git tag v0.1.5
-   git push origin v0.1.5
-   ```
-
-4. GitHub Actions will build and upload:
+3. GitHub Actions rewrites the release copy of `module.json` so its `version`, `manifest`, and `download` values match the release tag. It then builds and uploads:
 
    ```text
    module.json
    genefunk2090-dnd5e.zip
    ```
 
-The workflow fails if the pushed tag does not match `module.json` version or release URLs.
+You do not need to manually edit the source `module.json` version and release URLs for every release. The generated release asset gets the tag-specific values.
+
+The tag must look like `v0.1.5`. The generated manifest will use `0.1.5`.
 
 ## Manual Local Build
 

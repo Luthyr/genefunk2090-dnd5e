@@ -4,6 +4,14 @@ on:
   push:
     tags:
       - "v*"
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag, for example v0.1.5"
+        required: true
 
 permissions:
   contents: write
@@ -17,24 +25,43 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Check tag matches module version
+      - name: Resolve release version
+        id: release
         shell: pwsh
         run: |
+          $tag = "${{ github.event.release.tag_name }}"
+
+          if (-not $tag) {
+            $tag = "${{ github.event.inputs.tag }}"
+          }
+
+          if (-not $tag) {
+            $tag = "${env:GITHUB_REF_NAME}"
+          }
+
+          if ($tag -notmatch '^v\d+\.\d+\.\d+(-[A-Za-z0-9.-]+)?$') {
+            throw "Release tag must look like v0.1.5. Got: $tag"
+          }
+
+          $version = $tag.Substring(1)
+          "tag=$tag" >> $env:GITHUB_OUTPUT
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Write release manifest values
+        shell: pwsh
+        run: |
+          $tag = "${{ steps.release.outputs.tag }}"
+          $version = "${{ steps.release.outputs.version }}"
+          $repo = "${{ github.repository }}"
+
           $manifest = Get-Content module.json | ConvertFrom-Json
-          $expectedTag = "v$($manifest.version)"
-          $actualTag = "${env:GITHUB_REF_NAME}"
+          $manifest.version = $version
+          $manifest.url = "https://github.com/$repo"
+          $manifest.manifest = "https://github.com/$repo/releases/download/$tag/module.json"
+          $manifest.download = "https://github.com/$repo/releases/download/$tag/genefunk2090-dnd5e.zip"
 
-          if ($actualTag -ne $expectedTag) {
-            throw "Tag $actualTag does not match module.json version $($manifest.version). Expected $expectedTag."
-          }
-
-          if ($manifest.manifest -notlike "*/releases/download/$actualTag/module.json") {
-            throw "module.json manifest URL must point to $actualTag."
-          }
-
-          if ($manifest.download -notlike "*/releases/download/$actualTag/genefunk2090-dnd5e.zip") {
-            throw "module.json download URL must point to $actualTag."
-          }
+          $manifest | ConvertTo-Json -Depth 20 | Set-Content module.json -Encoding UTF8
+          Get-Content module.json
 
       - name: Build release assets
         shell: pwsh
@@ -71,6 +98,7 @@ jobs:
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.release.outputs.tag }}
           files: |
             dist/module.json
             dist/genefunk2090-dnd5e.zip
