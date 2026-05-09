@@ -28,19 +28,19 @@ dist/module.json
 dist/genefunk2090-dnd5e.zip
 ```
 
-After upload, this URL must open raw JSON in a browser:
+After upload, this URL must open or download JSON in a browser:
 
 ```text
-https://github.com/Luthyr/genefunk2090-dnd5e/releases/latest/download/module.json
+https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.0/module.json
 ```
 
 Foundry install URL:
 
 ```text
-https://github.com/Luthyr/genefunk2090-dnd5e/releases/latest/download/module.json
+https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.0/module.json
 ```
 
-If Foundry reports `Failed to fetch package manifest`, the release asset is missing, private, draft-only, or the URL is not reachable.
+If Foundry reports `Failed to fetch package manifest`, the release asset is missing, private, draft-only, or the URL is not reachable. The `releases/latest` URL only works for normal releases, not prereleases.
 
 ## Source Files To Push
 
