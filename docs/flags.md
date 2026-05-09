@@ -81,7 +81,7 @@ Example:
 
 The item remains a normal dnd5e item. Damage formulas, activation, uses, equipment state, and rolls should continue to use dnd5e fields unless a later feature has a documented reason to add a flag.
 
-Modern firearm placeholders use normal dnd5e `system.uses.value` for current magazine ammo. Reserve ammo and magazine metadata live in `flags.genefunk2090-dnd5e.ammo`.
+Modern firearm placeholders use normal dnd5e `system.uses.value` for current magazine ammo. Reserve ammo and firearm metadata live in `flags.genefunk2090-dnd5e.firearm`.
 
 Example:
 
@@ -90,17 +90,20 @@ Example:
   "flags": {
     "genefunk2090-dnd5e": {
       "category": "modern-weapon",
-      "ammo": {
-        "magazineSize": 12,
-        "reserve": 36,
-        "reload": "action"
+      "firearm": {
+        "magazineCapacity": 12,
+        "reserveAmmo": 36,
+        "reloadAction": "action",
+        "burstEnabled": false,
+        "burstSize": 3,
+        "traits": ["placeholder", "reload"]
       }
     }
   }
 }
 ```
 
-The helper `GeneFunk2090.spendAmmo(item)` decrements `system.uses.value`. The helper `GeneFunk2090.reloadAmmo(item)` moves rounds from reserve into the magazine.
+The helper `GeneFunk2090.spendAmmo(item)` decrements `system.uses.value`. If burst fire is enabled, it consumes `burstSize`. The helper `GeneFunk2090.reloadAmmo(item)` moves rounds from reserve into the magazine. The helper `GeneFunk2090.setBurstFire(item, enabled)` updates the burst toggle flag.
 
 ## Settings
 

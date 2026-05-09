@@ -276,18 +276,29 @@
         "per": "charges"
       },
       "damage": {
-        "parts": [["1d6", "piercing"]]
+        "parts": [
+          [
+            "1d6",
+            "piercing"
+          ]
+        ]
       }
     },
     "flags": {
       "genefunk2090-dnd5e": {
         "category": "modern-weapon",
         "placeholder": true,
-        "ammoTracking": "uses",
-        "ammo": {
-          "magazineSize": 12,
-          "reserve": 36,
-          "reload": "action"
+        "firearm": {
+          "magazineCapacity": 12,
+          "reserveAmmo": 36,
+          "reloadAction": "action",
+          "burstEnabled": false,
+          "burstSize": 3,
+          "traits": [
+            "placeholder",
+            "light",
+            "reload"
+          ]
         }
       }
     }
@@ -308,18 +319,30 @@
         "per": "charges"
       },
       "damage": {
-        "parts": [["1d8", "piercing"]]
+        "parts": [
+          [
+            "1d8",
+            "piercing"
+          ]
+        ]
       }
     },
     "flags": {
       "genefunk2090-dnd5e": {
         "category": "modern-weapon",
         "placeholder": true,
-        "ammoTracking": "uses",
-        "ammo": {
-          "magazineSize": 30,
-          "reserve": 90,
-          "reload": "action"
+        "firearm": {
+          "magazineCapacity": 30,
+          "reserveAmmo": 90,
+          "reloadAction": "action",
+          "burstEnabled": true,
+          "burstSize": 3,
+          "traits": [
+            "placeholder",
+            "burst",
+            "reload",
+            "two-handed"
+          ]
         }
       }
     }
@@ -340,18 +363,29 @@
         "per": "charges"
       },
       "damage": {
-        "parts": [["1d8", "piercing"]]
+        "parts": [
+          [
+            "1d8",
+            "piercing"
+          ]
+        ]
       }
     },
     "flags": {
       "genefunk2090-dnd5e": {
         "category": "modern-weapon",
         "placeholder": true,
-        "ammoTracking": "uses",
-        "ammo": {
-          "magazineSize": 8,
-          "reserve": 24,
-          "reload": "action"
+        "firearm": {
+          "magazineCapacity": 8,
+          "reserveAmmo": 24,
+          "reloadAction": "action",
+          "burstEnabled": false,
+          "burstSize": 3,
+          "traits": [
+            "placeholder",
+            "loud",
+            "reload"
+          ]
         }
       }
     }

@@ -4,7 +4,7 @@ A Foundry VTT add-on module scaffold for using GeneFunk 2090-style cyberpunk/bio
 
 ## Current Status
 
-Version: 0.1.3 gameplay placeholder pass
+Version: 0.1.5 firearm foundation pass
 
 This is an MVP foundation. It does not include copyrighted book text or extracted PDF content. It provides:
 
@@ -57,7 +57,7 @@ dist/genefunk2090-dnd5e.zip
 After the release exists, use this manifest URL in Foundry:
 
 ```text
-https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.4/module.json
+https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.5/module.json
 ```
 
 Using the GitHub repository page URL or a release URL without uploaded assets will fail with an invalid manifest response. GitHub's `latest` release URL does not work for prereleases.
@@ -97,11 +97,12 @@ This creates placeholder class Items for Biohacker, Codehacker, Crook, Engineer,
 
 The gameplay placeholder pass adds one playable Gunfighter class shell, three placeholder firearms, one armor item, three dnd5e spell-based hacks, one cyberware item, one sample NPC, and one sample player character. It also adds a lightweight GeneFunk actor panel for genotype, occupation, faction, credits, and cyberware load.
 
-Modern-weapon Items track the current magazine in `system.uses.value` and reserve ammo in the `flags.genefunk2090-dnd5e.ammo.reserve` flag. Spend and reload ammo with:
+Modern-weapon Items track the current magazine in `system.uses.value` and reserve ammo in `flags.genefunk2090-dnd5e.firearm.reserveAmmo`. Spend, reload, and toggle burst fire with:
 
 ```js
 await GeneFunk2090.spendAmmo(item);
 await GeneFunk2090.reloadAmmo(item);
+await GeneFunk2090.setBurstFire(item, true);
 ```
 
 ## Starter Macros
@@ -141,8 +142,11 @@ Create Foundry script macros by copying from:
 8. Open `GeneFunk Placeholder PC`. The actor should already have Gunfighter, a pistol, armor, one hack, and one cyberware item.
 9. Open the pistol item sheet and click **Spend Ammo**. The magazine count and `system.uses.value` should decrease by 1.
 10. Click **Reload** after spending ammo. The magazine should refill from reserve ammo.
-11. Open a placeholder hack item such as `Placeholder Signal Spike`. It should remain a normal dnd5e spell item while showing the GeneFunk `hack` category note.
-12. Use the starter macros to set a profile, tag an item, and print the profile to chat.
+11. Open `Placeholder Burst Rifle`, toggle **Burst**, and click **Fire Burst**. It should consume the burst size from the magazine while leaving the normal dnd5e roll button untouched.
+12. Open a placeholder hack item such as `Placeholder Signal Spike`. It should remain a normal dnd5e spell item while showing the GeneFunk `hack` category note.
+13. Use the starter macros to set a profile, tag an item, and print the profile to chat.
+
+The actor sheet also displays a firearm ammo panel when the actor owns modern-weapon Items. This panel is display-only and does not replace dnd5e item rolls.
 
 Updating the module does not automatically create world Actors. The sample NPC and PC are source JSON placeholders until imported with `GeneFunk2090.importStarterAll()` or `macros/import-starter-content.js`.
 

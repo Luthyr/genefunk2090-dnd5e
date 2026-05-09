@@ -34,7 +34,26 @@
 }
 
 .genefunk-ammo-status {
-  margin-left: 0.5rem;
+  font-weight: 700;
+}
+
+.genefunk-firearm-controls {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 0.35rem;
+}
+
+.genefunk-firearm-traits {
+  font-size: 0.8rem;
+}
+
+.genefunk-burst-toggle {
+  display: inline-flex;
+  gap: 0.2rem;
+  align-items: center;
+  margin-left: 0.35rem;
   font-weight: 700;
 }
 
@@ -69,4 +88,34 @@
 .genefunk-profile-grid input {
   width: 100%;
   min-width: 0;
+}
+
+.genefunk-ammo-panel {
+  margin: 0 0 0.6rem 0;
+  padding: 0.5rem;
+  border: 1px solid rgba(80, 120, 180, 0.45);
+  border-radius: 6px;
+  background: rgba(80, 120, 180, 0.06);
+}
+
+.genefunk-ammo-panel header {
+  display: flex;
+  gap: 0.4rem;
+  align-items: baseline;
+  margin-bottom: 0.35rem;
+}
+
+.genefunk-ammo-panel ul {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.genefunk-ammo-panel li {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) auto auto auto;
+  gap: 0.5rem;
+  align-items: center;
 }
