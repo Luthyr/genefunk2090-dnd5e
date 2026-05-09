@@ -1,111 +1,197 @@
+/**
+ * GeneFunk 2090 for D&D 5e
+ * MVP module scaffold.
+ *
+ * Design principle:
+ * - Keep the official dnd5e system as the rules engine.
+ * - Store GeneFunk-specific data in actor/item flags.
+ * - Use dnd5e item types where possible: class, subclass, feat, weapon, equipment, consumable, spell.
+ * - Add automation only where it meaningfully reduces table friction.
+ */
+
 const MODULE_ID = "genefunk2090-dnd5e";
-
-const FLAGS = {
-  actorProfile: "profile",
-  itemCategory: "category"
-};
-
-const ITEM_CATEGORIES = new Set(["cyberware", "bioware", "hack", "equipment"]);
+const ITEM_CATEGORIES = new Set(["hack", "cyberware", "bioware", "modern-weapon", "armor", "drug", "tool", "equipment"]);
 
 Hooks.once("init", () => {
-  registerSettings();
-});
-
-Hooks.once("ready", () => {
-  globalThis.Genefunk2090 = {
-    MODULE_ID,
-    FLAGS,
-    ITEM_CATEGORIES: [...ITEM_CATEGORIES],
-    getSelectedActor,
-    getActorProfile,
-    setActorProfile,
-    printActorProfileToChat,
-    tagItem
-  };
-
-  console.info(`${MODULE_ID} | Console helpers available on globalThis.Genefunk2090`);
-});
-
-Hooks.on("renderActorSheet", (app, html) => {
-  injectActorBadge(app.actor ?? app.document, html);
-});
-
-Hooks.on("renderActorSheetV2", (app, element) => {
-  injectActorBadge(app.actor ?? app.document, element);
-});
-
-function registerSettings() {
-  game.settings.register(MODULE_ID, "showSheetBadges", {
-    name: "Show GeneFunk sheet badges",
-    hint: "Display a compact GeneFunk badge on actor sheets when an actor has a GeneFunk profile flag.",
-    scope: "world",
-    config: true,
-    type: Boolean,
-    default: true,
-    onChange: () => refreshActorSheets()
-  });
+  console.log(`${MODULE_ID} | Initializing`);
 
   game.settings.register(MODULE_ID, "enableModernFirearms", {
-    name: "Enable modern firearms",
-    hint: "Enable placeholder module affordances for modern firearm content. This pass does not add automation or copyrighted item text.",
+    name: game.i18n.localize("GENEFUNK.Settings.EnableModernFirearms.Name"),
+    hint: game.i18n.localize("GENEFUNK.Settings.EnableModernFirearms.Hint"),
     scope: "world",
     config: true,
     type: Boolean,
-    default: false
+    default: true
   });
 
   game.settings.register(MODULE_ID, "enableHackTracking", {
-    name: "Enable hack tracking",
-    hint: "Enable placeholder module affordances for hack-tagged items and future tracking workflows.",
+    name: game.i18n.localize("GENEFUNK.Settings.EnableHackCardTracking.Name"),
+    hint: game.i18n.localize("GENEFUNK.Settings.EnableHackCardTracking.Hint"),
     scope: "world",
     config: true,
     type: Boolean,
-    default: false
+    default: true
   });
+
+  game.settings.register(MODULE_ID, "showSheetBadges", {
+    name: game.i18n.localize("GENEFUNK.Settings.EnableSheetBadges.Name"),
+    hint: game.i18n.localize("GENEFUNK.Settings.EnableSheetBadges.Hint"),
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true
+  });
+});
+
+Hooks.once("ready", () => {
+  console.log(`${MODULE_ID} | Ready`);
+  if (game.system.id !== "dnd5e") {
+    ui.notifications.warn("GeneFunk 2090 for D&D 5e is designed for the dnd5e system.");
+  }
+
+  globalThis.GeneFunk2090 = createHelpers();
+  globalThis.Genefunk2090 = globalThis.GeneFunk2090;
+});
+
+/**
+ * Add a small metadata header to dnd5e character sheets.
+ * This avoids replacing the full dnd5e sheet, which keeps compatibility higher.
+ */
+Hooks.on("renderActorSheet", (app, html) => {
+  injectActorBadge(app, html);
+});
+
+Hooks.on("renderActorSheetV2", (app, element) => {
+  injectActorBadge(app, element);
+});
+
+Hooks.on("renderItemSheet", (app, html) => {
+  injectItemNote(app, html);
+});
+
+Hooks.on("renderItemSheetV2", (app, element) => {
+  injectItemNote(app, element);
+});
+
+function injectActorBadge(app, html) {
+  if (!game.settings.get(MODULE_ID, "showSheetBadges")) return;
+
+  const actor = app.actor ?? app.document;
+  if (actor?.type !== "character") return;
+
+  const root = getRootElement(html);
+  if (!root || root.querySelector(".genefunk-sheet-badge")) return;
+
+  const gf = actor.getFlag(MODULE_ID, "profile") ?? {};
+  const primary = gf.genotype || gf.archetype || "Unassigned Genotype";
+  const secondary = gf.occupation || gf.origin || "Unassigned Occupation";
+
+  const badge = document.createElement("div");
+  badge.classList.add("genefunk-sheet-badge");
+  badge.innerHTML = `
+    <strong>GeneFunk 2090</strong>
+    <span>${escapeHtml(primary)}</span>
+    <span>${escapeHtml(secondary)}</span>
+  `;
+
+  const target = root.querySelector(".window-content form") || root.querySelector(".window-content") || root.querySelector("form") || root;
+  if (target) target.prepend(badge);
 }
 
-function refreshActorSheets() {
-  for (const actor of game.actors ?? []) {
-    for (const app of Object.values(actor.apps ?? {})) app.render(false);
-  }
+/**
+ * Adds a lightweight item sheet note for GeneFunk-tagged items.
+ */
+function injectItemNote(app, html) {
+  const item = app.item ?? app.document;
+  const category = item?.getFlag(MODULE_ID, "category");
+  if (!category) return;
+
+  const root = getRootElement(html);
+  if (!root || root.querySelector(".genefunk-item-note")) return;
+
+  const note = document.createElement("div");
+  note.classList.add("genefunk-item-note");
+  note.innerHTML = `<strong>GeneFunk Category:</strong> ${escapeHtml(category)}`;
+
+  const target = root.querySelector(".window-content form") || root.querySelector(".window-content") || root.querySelector("form") || root;
+  if (target) target.prepend(note);
+}
+
+/**
+ * Public helper functions for macros and later automation.
+ */
+function createHelpers() {
+  return {
+    MODULE_ID,
+    ITEM_CATEGORIES: [...ITEM_CATEGORIES],
+    getSelectedActor,
+    getProfile,
+    getActorProfile: getProfile,
+    setProfile,
+    setActorProfile: setProfile,
+    tagItem,
+    printActorProfileToChat,
+    importStarterContent
+  };
 }
 
 function getSelectedActor() {
-  const tokenActor = canvas?.tokens?.controlled?.[0]?.actor;
-  if (tokenActor) return tokenActor;
-  return game.user?.character ?? null;
+  return canvas?.tokens?.controlled?.[0]?.actor ?? game.user?.character ?? null;
 }
 
-function getActorProfile(actor = getSelectedActor()) {
-  if (!actor) return null;
-  return actor.getFlag(MODULE_ID, FLAGS.actorProfile) ?? null;
-}
-
-async function setActorProfile(actorOrProfile, maybeProfile) {
+async function setProfile(actorOrProfile, maybeProfile) {
   const actor = maybeProfile ? actorOrProfile : getSelectedActor();
   const profile = maybeProfile ?? actorOrProfile;
-
-  if (!actor) {
-    ui.notifications?.warn("Select a token or assign a user character first.");
-    return null;
-  }
+  if (!actor) throw new Error("No actor provided.");
 
   const normalized = normalizeProfile(profile);
-  await actor.setFlag(MODULE_ID, FLAGS.actorProfile, normalized);
+  await actor.setFlag(MODULE_ID, "profile", normalized);
   ui.notifications?.info(`GeneFunk profile set for ${actor.name}.`);
   return normalized;
 }
 
-async function printActorProfileToChat(actor = getSelectedActor()) {
-  if (!actor) {
-    ui.notifications?.warn("Select a token or assign a user character first.");
-    return null;
+function getProfile(actor = getSelectedActor()) {
+  return actor?.getFlag(MODULE_ID, "profile") ?? {};
+}
+
+async function tagItem(item, category = "equipment") {
+  if (!item) throw new Error("No item provided.");
+
+  const normalized = String(category).trim().toLowerCase();
+  if (!ITEM_CATEGORIES.has(normalized)) {
+    throw new Error(`Unsupported GeneFunk item category: ${category}`);
   }
 
-  const profile = getActorProfile(actor);
-  const rows = profile
+  await item.setFlag(MODULE_ID, "category", normalized);
+  ui.notifications?.info(`${item.name} tagged as ${normalized}.`);
+  return normalized;
+}
+
+async function importStarterContent() {
+  const response = await fetch(`modules/${MODULE_ID}/source-import/starter-items.json`);
+  if (!response.ok) throw new Error(`Unable to load starter content: ${response.status}`);
+
+  const items = await response.json();
+  const existingNames = new Set(game.items.contents.map((item) => item.name));
+  const toCreate = items.filter((item) => !existingNames.has(item.name));
+
+  if (!toCreate.length) {
+    ui.notifications?.info("GeneFunk starter content already exists in this world.");
+    return [];
+  }
+
+  const created = await Item.createDocuments(toCreate);
+  ui.notifications?.info(`Created ${created.length} GeneFunk starter items.`);
+  return created;
+}
+
+async function printActorProfileToChat(actor = getSelectedActor()) {
+  if (!actor) throw new Error("No actor provided.");
+
+  const profile = getProfile(actor);
+  const rows = Object.entries(profile).length
     ? Object.entries(profile).map(([key, value]) => `<dt>${escapeHtml(labelize(key))}</dt><dd>${escapeHtml(String(value || "Not set"))}</dd>`).join("")
-    : `<dt>Status</dt><dd>No GeneFunk profile flag set.</dd>`;
+    : "<dt>Status</dt><dd>No GeneFunk profile flag set.</dd>";
 
   return ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor }),
@@ -118,66 +204,29 @@ async function printActorProfileToChat(actor = getSelectedActor()) {
   });
 }
 
-async function tagItem(item, category = "equipment") {
-  if (!item) {
-    ui.notifications?.warn("Pass an Item document to Genefunk2090.tagItem(item, category).");
-    return null;
-  }
-
-  const normalized = String(category).trim().toLowerCase();
-  if (!ITEM_CATEGORIES.has(normalized)) {
-    ui.notifications?.warn(`Unsupported GeneFunk item category: ${category}`);
-    return null;
-  }
-
-  await item.setFlag(MODULE_ID, FLAGS.itemCategory, normalized);
-  ui.notifications?.info(`${item.name} tagged as ${normalized}.`);
-  return normalized;
-}
-
-function injectActorBadge(actor, html) {
-  if (!actor || !game.settings.get(MODULE_ID, "showSheetBadges")) return;
-
-  const profile = getActorProfile(actor);
-  if (!profile) return;
-
-  const root = getElement(html);
-  if (!root || root.querySelector(".genefunk-sheet-badge")) return;
-
-  const badge = document.createElement("span");
-  badge.className = "genefunk-sheet-badge";
-  badge.textContent = profile.badge || profile.archetype || "GeneFunk";
-  badge.title = "GeneFunk 2090 profile flag is set";
-
-  const title = root.querySelector(".window-title, .sheet-header, header.sheet-header, .app-title");
-  if (title) title.append(badge);
-}
-
 function normalizeProfile(profile = {}) {
   if (typeof profile === "string") {
-    return {
-      archetype: profile,
-      origin: "",
-      notes: ""
-    };
+    return { archetype: profile, origin: "", background: "", notes: "" };
   }
 
   return {
-    archetype: String(profile.archetype ?? profile.badge ?? "GeneFunk Profile"),
-    origin: String(profile.origin ?? ""),
-    background: String(profile.background ?? ""),
+    genotype: String(profile.genotype ?? profile.archetype ?? ""),
+    occupation: String(profile.occupation ?? profile.origin ?? ""),
+    archetype: String(profile.archetype ?? profile.genotype ?? ""),
+    origin: String(profile.origin ?? profile.occupation ?? ""),
+    background: String(profile.background ?? profile.faction ?? ""),
     notes: String(profile.notes ?? "")
   };
 }
 
-function getElement(html) {
+function labelize(key) {
+  return key.replace(/([A-Z])/g, " $1").replace(/^./, (char) => char.toUpperCase());
+}
+
+function getRootElement(html) {
   if (html instanceof HTMLElement) return html;
   if (html?.[0] instanceof HTMLElement) return html[0];
   return null;
-}
-
-function labelize(key) {
-  return key.replace(/([A-Z])/g, " $1").replace(/^./, (char) => char.toUpperCase());
 }
 
 function escapeHtml(value) {

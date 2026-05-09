@@ -1,115 +1,130 @@
-# GeneFunk 2090 Add-On for D&D 5e
+# GeneFunk 2090 for D&D 5e
 
-`genefunk2090-dnd5e` is a Foundry VTT v13 module that keeps the official `dnd5e` system as the rules engine and layers small GeneFunk 2090-style cyberpunk and biopunk affordances on top.
+A Foundry VTT add-on module scaffold for using GeneFunk 2090-style cyberpunk/biopunk rules and content on top of the existing D&D 5e system.
 
-This repository intentionally does not contain copyrighted GeneFunk book text. Starter data is limited to placeholders and schema examples.
+## Current Status
 
-## Current Scope
+Version: 0.1.0 scaffold
 
-- Foundry v13 module manifest using the modern package format.
-- Required system relationship for `dnd5e`.
-- World settings for sheet badges, modern firearms, and hack tracking.
-- Actor sheet badge for actors with a GeneFunk profile flag.
-- Console helpers exposed as `globalThis.Genefunk2090`.
-- Copyable starter macros in `macros/`.
-- Flag model documentation in `docs/flags.md`.
+This is an MVP foundation. It does not include copyrighted book text or extracted PDF content. It provides:
 
-## Install for Local Development
+- A valid Foundry module manifest
+- D&D 5e system dependency
+- Placeholder pack folders for future exported compendia
+- Starter script hooks
+- Actor profile helper flags
+- Item categorization helper flags
+- Placeholder starter Items in `source-import/starter-items.json`
+- Basic character sheet badge styling
+- A content import roadmap
 
-This repository is not published as a release zip yet, so do not use Foundry's **Install Module** manifest URL flow for this development copy. Install it as a local module folder.
+## Install
 
-1. Copy or symlink this repository into your Foundry user data folder with this exact folder name:
+Copy the `genefunk2090-dnd5e` folder into:
 
-   ```text
-   Data/modules/genefunk2090-dnd5e
-   ```
-
-   On a default Windows Foundry install, that usually means:
-
-   ```powershell
-   $target = "$env:LOCALAPPDATA\FoundryVTT\Data\modules\genefunk2090-dnd5e"
-   New-Item -ItemType Directory -Force $target
-   Copy-Item -Recurse -Force .\* $target
-   ```
-
-2. Confirm `Data/modules/genefunk2090-dnd5e/module.json` exists.
-3. Start Foundry VTT v13.
-4. Create or open a world using the official `dnd5e` system.
-5. Enable **GeneFunk 2090 Add-On for D&D 5e** in **Manage Modules**.
-
-The module id and folder name must both be `genefunk2090-dnd5e`.
-
-## Test Checklist
-
-### Manifest and Activation
-
-1. Start Foundry v13.
-2. Open a `dnd5e` world.
-3. Enable the module.
-4. Confirm there are no manifest or activation errors in the browser console.
-
-### Settings
-
-1. Open **Configure Settings**.
-2. Find the module settings.
-3. Toggle:
-   - **Show GeneFunk sheet badges**
-   - **Enable modern firearms**
-   - **Enable hack tracking**
-
-The modern firearms and hack tracking toggles are placeholders for future behavior.
-
-### Console Helpers
-
-Select a token, then run:
-
-```js
-await Genefunk2090.setActorProfile({
-  archetype: "GeneFunk Profile",
-  origin: "Placeholder origin",
-  background: "Placeholder background",
-  notes: "Local table notes"
-});
+```text
+{Foundry User Data}/Data/modules/
 ```
 
-Print the profile to chat:
+Then restart Foundry and enable **GeneFunk 2090 for D&D 5e** in a D&D 5e world.
+
+The local folder name must be exactly:
+
+```text
+genefunk2090-dnd5e
+```
+
+## Developer Console Helpers
+
+Set a GeneFunk profile on a selected token's actor:
 
 ```js
-await Genefunk2090.printActorProfileToChat();
+await GeneFunk2090.setProfile(canvas.tokens.controlled[0].actor, {
+  archetype: "Example Archetype",
+  origin: "Example Origin",
+  background: "Example Background"
+});
 ```
 
 Tag an item:
 
 ```js
-const actor = Genefunk2090.getSelectedActor();
-const item = actor.items.contents[0];
-await Genefunk2090.tagItem(item, "cyberware");
+await GeneFunk2090.tagItem(actor.items.getName("Example Item"), "cyberware");
 ```
 
-### Sheet Badge
+Import placeholder starter Items into the current world:
 
-1. Enable **Show GeneFunk sheet badges**.
-2. Set a profile on an actor with the console helper or macro.
-3. Open that actor's character sheet.
-4. Confirm a compact GeneFunk badge appears in the sheet header.
+```js
+await GeneFunk2090.importStarterContent();
+```
 
-### Starter Macros
+This creates placeholder class Items for Biohacker, Codehacker, Crook, Engineer, Gunfighter, Hardcase, Samurai, and Suit, plus one placeholder Item for each starter category. These are not book text and do not contain real mechanics yet.
 
-Create Foundry script macros and copy the contents of:
+## Starter Macros
 
+Create Foundry script macros by copying from:
+
+- `macros/import-starter-content.js`
+- `macros/set-genotype-occupation.js`
 - `macros/set-gene-funk-profile.js`
 - `macros/tag-selected-item.js`
 - `macros/print-gene-funk-profile.js`
 
-Run them with a token selected. The item-tag macro tags the first rendered item sheet for the selected actor when possible, otherwise the actor's first item.
+## Suggested MVP Content Order
 
-## Data Model
+1. Create class items:
+   - Biohacker
+   - Codehacker
+   - Crook
+   - Engineer
+   - Gunfighter
+   - Hardcase
+   - Samurai
+   - Suit
 
-See `docs/flags.md` for the initial actor and item flag schema.
+2. Create subclass/feature items:
+   - One sample subclass per class
+   - Level 1 features first
+   - Automation later
 
-## Development Notes
+3. Replace placeholder item categories with table-approved mechanics:
+   - Hacks
+   - Cyberware
+   - Bioware
+   - Modern weapons
+   - Armor
+   - Drugs
+   - Tools
 
-- Use ES modules through `module.json` `esmodules`.
-- Prefer Foundry flags under `genefunk2090-dnd5e`.
-- Keep dnd5e actor and item data as the source of rules behavior.
-- Avoid dnd5e roll overrides until a later, documented automation pass.
+4. Create hacks:
+   - Import hack cards as Items
+   - Use dnd5e spell or feat item types depending on the rule behavior
+   - Add flags for hack family, action cost, target, range, duration, save/check, and scaling
+
+5. Create pregens:
+   - Build level 1 pregens manually from official PDFs
+   - Save to Actor compendium
+   - Repeat for level 3 pregens
+
+## Design Notes
+
+Prefer compatibility over deep replacement.
+
+Good module choices:
+- Add compendia
+- Add flags
+- Add small sheet badges
+- Add optional macros
+- Add optional automation
+
+Avoid initially:
+- Replacing the dnd5e actor sheet
+- Forking the dnd5e system
+- Overriding dnd5e roll internals
+- Rebuilding the whole rules engine
+
+## Next Build Step
+
+Create the first compendium entries manually in a test world, export them into the module packs, then add automation only after the content model feels stable.
+
+Do not add pack entries to `module.json` until each `packs/<name>` folder contains a real Foundry compendium database exported by Foundry. README placeholders are not valid compendium packs.

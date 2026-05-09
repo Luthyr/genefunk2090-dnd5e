@@ -15,9 +15,13 @@ if (!actor) {
           <div class="form-group">
             <label>Category</label>
             <select name="category">
+              <option value="hack">Hack</option>
               <option value="cyberware">Cyberware</option>
               <option value="bioware">Bioware</option>
-              <option value="hack">Hack</option>
+              <option value="modern-weapon">Modern Weapon</option>
+              <option value="armor">Armor</option>
+              <option value="drug">Drug</option>
+              <option value="tool">Tool</option>
               <option value="equipment">Equipment</option>
             </select>
           </div>
@@ -30,6 +34,6 @@ if (!actor) {
       }
     });
 
-    if (category) await Genefunk2090.tagItem(item, category);
+    if (category) await GeneFunk2090.tagItem(item, category);
   }
 }

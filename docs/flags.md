@@ -12,6 +12,8 @@ Stores table-authored GeneFunk profile metadata for an actor.
 
 ```json
 {
+  "genotype": "Placeholder genotype",
+  "occupation": "Placeholder occupation",
   "archetype": "GeneFunk Profile",
   "origin": "Placeholder origin",
   "background": "Placeholder background",
@@ -35,9 +37,13 @@ Classifies an item for later module affordances.
 
 Allowed starter values:
 
+- `hack`
 - `cyberware`
 - `bioware`
-- `hack`
+- `modern-weapon`
+- `armor`
+- `drug`
+- `tool`
 - `equipment`
 
 Example:
@@ -47,6 +53,23 @@ Example:
   "flags": {
     "genefunk2090-dnd5e": {
       "category": "cyberware"
+    }
+  }
+}
+```
+
+### `flags.genefunk2090-dnd5e.contentType`
+
+Classifies placeholder class Items without implying mechanics.
+
+Example:
+
+```json
+{
+  "flags": {
+    "genefunk2090-dnd5e": {
+      "contentType": "class",
+      "placeholder": true
     }
   }
 }

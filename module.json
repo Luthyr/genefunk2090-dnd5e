@@ -1,17 +1,18 @@
 {
   "id": "genefunk2090-dnd5e",
-  "title": "GeneFunk 2090 Add-On for D&D 5e",
-  "description": "A lightweight D&D 5e add-on module for GeneFunk 2090-style cyberpunk and biopunk flags, sheet badges, settings, and starter macros. This module does not replace or fork the dnd5e system.",
+  "title": "GeneFunk 2090 for D&D 5e",
+  "description": "A Foundry VTT add-on module that layers GeneFunk 2090-style cyberpunk biopunk content and rules onto the D&D 5e system.",
   "version": "0.1.0",
   "authors": [
     {
-      "name": "Module Maintainers"
+      "name": "Randy",
+      "flags": {}
     }
   ],
   "compatibility": {
     "minimum": "13.341",
     "verified": "13.351",
-    "maximum": "13"
+    "maximum": "13.999"
   },
   "relationships": {
     "systems": [
@@ -29,9 +30,16 @@
     "scripts/main.js"
   ],
   "styles": [
-    "styles/genefunk2090.css"
+    "styles/genefunk.css"
   ],
   "url": "https://github.com/mosio/genefunk2090",
   "license": "LICENSE",
-  "readme": "README.md"
+  "readme": "README.md",
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ]
 }

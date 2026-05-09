@@ -1,0 +1,8 @@
+{
+  "GENEFUNK.Settings.EnableModernFirearms.Name": "Enable Modern Firearms Support",
+  "GENEFUNK.Settings.EnableModernFirearms.Hint": "Reserved for GeneFunk firearm properties, ammo tracking, burst fire, and autofire automation.",
+  "GENEFUNK.Settings.EnableHackCardTracking.Name": "Enable Hack Card Tracking",
+  "GENEFUNK.Settings.EnableHackCardTracking.Hint": "Reserved for hack-card resource tracking and usage automation.",
+  "GENEFUNK.Settings.EnableSheetBadges.Name": "Show GeneFunk Sheet Badges",
+  "GENEFUNK.Settings.EnableSheetBadges.Hint": "Adds a compact GeneFunk metadata badge to D&D 5e character sheets."
+}

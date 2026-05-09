@@ -1,0 +1,257 @@
+[
+  {
+    "name": "Biohacker",
+    "type": "class",
+    "img": "icons/svg/book.svg",
+    "system": {
+      "description": {
+        "value": "<p>Placeholder GeneFunk class item. Add table-approved mechanics later.</p>"
+      },
+      "identifier": "biohacker"
+    },
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "contentType": "class",
+        "placeholder": true
+      }
+    }
+  },
+  {
+    "name": "Codehacker",
+    "type": "class",
+    "img": "icons/svg/book.svg",
+    "system": {
+      "description": {
+        "value": "<p>Placeholder GeneFunk class item. Add table-approved mechanics later.</p>"
+      },
+      "identifier": "codehacker"
+    },
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "contentType": "class",
+        "placeholder": true
+      }
+    }
+  },
+  {
+    "name": "Crook",
+    "type": "class",
+    "img": "icons/svg/book.svg",
+    "system": {
+      "description": {
+        "value": "<p>Placeholder GeneFunk class item. Add table-approved mechanics later.</p>"
+      },
+      "identifier": "crook"
+    },
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "contentType": "class",
+        "placeholder": true
+      }
+    }
+  },
+  {
+    "name": "Engineer",
+    "type": "class",
+    "img": "icons/svg/book.svg",
+    "system": {
+      "description": {
+        "value": "<p>Placeholder GeneFunk class item. Add table-approved mechanics later.</p>"
+      },
+      "identifier": "engineer"
+    },
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "contentType": "class",
+        "placeholder": true
+      }
+    }
+  },
+  {
+    "name": "Gunfighter",
+    "type": "class",
+    "img": "icons/svg/book.svg",
+    "system": {
+      "description": {
+        "value": "<p>Placeholder GeneFunk class item. Add table-approved mechanics later.</p>"
+      },
+      "identifier": "gunfighter"
+    },
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "contentType": "class",
+        "placeholder": true
+      }
+    }
+  },
+  {
+    "name": "Hardcase",
+    "type": "class",
+    "img": "icons/svg/book.svg",
+    "system": {
+      "description": {
+        "value": "<p>Placeholder GeneFunk class item. Add table-approved mechanics later.</p>"
+      },
+      "identifier": "hardcase"
+    },
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "contentType": "class",
+        "placeholder": true
+      }
+    }
+  },
+  {
+    "name": "Samurai",
+    "type": "class",
+    "img": "icons/svg/book.svg",
+    "system": {
+      "description": {
+        "value": "<p>Placeholder GeneFunk class item. Add table-approved mechanics later.</p>"
+      },
+      "identifier": "samurai"
+    },
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "contentType": "class",
+        "placeholder": true
+      }
+    }
+  },
+  {
+    "name": "Suit",
+    "type": "class",
+    "img": "icons/svg/book.svg",
+    "system": {
+      "description": {
+        "value": "<p>Placeholder GeneFunk class item. Add table-approved mechanics later.</p>"
+      },
+      "identifier": "suit"
+    },
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "contentType": "class",
+        "placeholder": true
+      }
+    }
+  },
+  {
+    "name": "Placeholder Hack",
+    "type": "feat",
+    "img": "icons/svg/aura.svg",
+    "system": {
+      "description": {
+        "value": "<p>Placeholder hack item. Add table-approved mechanics later.</p>"
+      },
+      "identifier": "placeholder-hack"
+    },
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "category": "hack",
+        "placeholder": true
+      }
+    }
+  },
+  {
+    "name": "Placeholder Cyberware",
+    "type": "equipment",
+    "img": "icons/svg/upgrade.svg",
+    "system": {
+      "description": {
+        "value": "<p>Placeholder cyberware item. Add table-approved mechanics later.</p>"
+      },
+      "identifier": "placeholder-cyberware"
+    },
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "category": "cyberware",
+        "placeholder": true
+      }
+    }
+  },
+  {
+    "name": "Placeholder Bioware",
+    "type": "equipment",
+    "img": "icons/svg/dna.svg",
+    "system": {
+      "description": {
+        "value": "<p>Placeholder bioware item. Add table-approved mechanics later.</p>"
+      },
+      "identifier": "placeholder-bioware"
+    },
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "category": "bioware",
+        "placeholder": true
+      }
+    }
+  },
+  {
+    "name": "Placeholder Modern Weapon",
+    "type": "weapon",
+    "img": "icons/svg/combat.svg",
+    "system": {
+      "description": {
+        "value": "<p>Placeholder modern weapon item. Add table-approved mechanics later.</p>"
+      },
+      "identifier": "placeholder-modern-weapon"
+    },
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "category": "modern-weapon",
+        "placeholder": true
+      }
+    }
+  },
+  {
+    "name": "Placeholder Armor",
+    "type": "equipment",
+    "img": "icons/svg/shield.svg",
+    "system": {
+      "description": {
+        "value": "<p>Placeholder armor item. Add table-approved mechanics later.</p>"
+      },
+      "identifier": "placeholder-armor"
+    },
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "category": "armor",
+        "placeholder": true
+      }
+    }
+  },
+  {
+    "name": "Placeholder Drug",
+    "type": "consumable",
+    "img": "icons/svg/acid.svg",
+    "system": {
+      "description": {
+        "value": "<p>Placeholder drug item. Add table-approved mechanics later.</p>"
+      },
+      "identifier": "placeholder-drug"
+    },
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "category": "drug",
+        "placeholder": true
+      }
+    }
+  },
+  {
+    "name": "Placeholder Tool",
+    "type": "tool",
+    "img": "icons/svg/gears.svg",
+    "system": {
+      "description": {
+        "value": "<p>Placeholder tool item. Add table-approved mechanics later.</p>"
+      },
+      "identifier": "placeholder-tool"
+    },
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "category": "tool",
+        "placeholder": true
+      }
+    }
+  }
+]

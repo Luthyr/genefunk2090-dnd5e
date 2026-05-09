@@ -4,11 +4,13 @@ if (!actor) {
   ui.notifications.warn("Select a token or assign a user character first.");
 } else {
   const profile = {
-    archetype: "GeneFunk Profile",
-    origin: "Placeholder origin",
+    genotype: "Placeholder Genotype",
+    occupation: "Placeholder Occupation",
+    archetype: "Legacy Placeholder Archetype",
+    origin: "Legacy Placeholder Origin",
     background: "Placeholder background",
     notes: "Replace these placeholders with table-approved, non-copyrighted notes."
   };
 
-  await Genefunk2090.setActorProfile(actor, profile);
+  await GeneFunk2090.setActorProfile(actor, profile);
 }
