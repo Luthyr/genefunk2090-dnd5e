@@ -195,6 +195,7 @@ function createHelpers() {
     printActorProfileToChat,
     importStarterContent,
     importStarterActors,
+    importStarterAll,
     getAmmoState,
     spendAmmo,
     reloadAmmo
@@ -323,6 +324,12 @@ async function importStarterActors() {
   const created = await Actor.createDocuments(toCreate);
   ui.notifications?.info(`Created ${created.length} GeneFunk starter actors.`);
   return created;
+}
+
+async function importStarterAll() {
+  const items = await importStarterContent();
+  const actors = await importStarterActors();
+  return { items, actors };
 }
 
 async function loadStarterItems() {

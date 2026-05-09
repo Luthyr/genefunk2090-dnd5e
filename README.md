@@ -57,7 +57,7 @@ dist/genefunk2090-dnd5e.zip
 After the release exists, use this manifest URL in Foundry:
 
 ```text
-https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.3/module.json
+https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.4/module.json
 ```
 
 Using the GitHub repository page URL or a release URL without uploaded assets will fail with an invalid manifest response. GitHub's `latest` release URL does not work for prereleases.
@@ -87,6 +87,12 @@ await GeneFunk2090.importStarterContent();
 await GeneFunk2090.importStarterActors();
 ```
 
+Or import both with:
+
+```js
+await GeneFunk2090.importStarterAll();
+```
+
 This creates placeholder class Items for Biohacker, Codehacker, Crook, Engineer, Gunfighter, Hardcase, Samurai, and Suit, plus one placeholder Item for each starter category. These are not book text and do not contain real mechanics yet.
 
 The gameplay placeholder pass adds one playable Gunfighter class shell, three placeholder firearms, one armor item, three dnd5e spell-based hacks, one cyberware item, one sample NPC, and one sample player character. It also adds a lightweight GeneFunk actor panel for genotype, occupation, faction, credits, and cyberware load.
@@ -112,11 +118,10 @@ Create Foundry script macros by copying from:
 
 1. Install or update the module in a Foundry VTT v13 world using the official `dnd5e` system.
 2. Log in as a GM and enable **GeneFunk 2090 for D&D 5e**.
-3. Run the starter import helpers in the browser console as GM:
+3. Run the starter import macro or run the helpers in the browser console as GM:
 
    ```js
-   await GeneFunk2090.importStarterContent();
-   await GeneFunk2090.importStarterActors();
+   await GeneFunk2090.importStarterAll();
    ```
 
 4. Confirm the world Items directory contains `Gunfighter`.
@@ -138,6 +143,8 @@ Create Foundry script macros by copying from:
 10. Click **Reload** after spending ammo. The magazine should refill from reserve ammo.
 11. Open a placeholder hack item such as `Placeholder Signal Spike`. It should remain a normal dnd5e spell item while showing the GeneFunk `hack` category note.
 12. Use the starter macros to set a profile, tag an item, and print the profile to chat.
+
+Updating the module does not automatically create world Actors. The sample NPC and PC are source JSON placeholders until imported with `GeneFunk2090.importStarterAll()` or `macros/import-starter-content.js`.
 
 ## Suggested MVP Content Order
 

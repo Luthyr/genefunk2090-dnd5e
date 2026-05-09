@@ -1,1 +1,1 @@
-await GeneFunk2090.importStarterContent();
+await GeneFunk2090.importStarterAll();
