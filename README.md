@@ -16,13 +16,23 @@ This repository intentionally does not contain copyrighted GeneFunk book text. S
 
 ## Install for Local Development
 
-1. Copy or symlink this repository into your Foundry user data folder:
+This repository is not published as a release zip yet, so do not use Foundry's **Install Module** manifest URL flow for this development copy. Install it as a local module folder.
+
+1. Copy or symlink this repository into your Foundry user data folder with this exact folder name:
 
    ```text
    Data/modules/genefunk2090-dnd5e
    ```
 
-2. Confirm the folder contains `module.json` at its root.
+   On a default Windows Foundry install, that usually means:
+
+   ```powershell
+   $target = "$env:LOCALAPPDATA\FoundryVTT\Data\modules\genefunk2090-dnd5e"
+   New-Item -ItemType Directory -Force $target
+   Copy-Item -Recurse -Force .\* $target
+   ```
+
+2. Confirm `Data/modules/genefunk2090-dnd5e/module.json` exists.
 3. Start Foundry VTT v13.
 4. Create or open a world using the official `dnd5e` system.
 5. Enable **GeneFunk 2090 Add-On for D&D 5e** in **Manage Modules**.
