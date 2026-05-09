@@ -1,0 +1,88 @@
+name: Dev Foundry Module Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dev-foundry-release
+  cancel-in-progress: true
+
+jobs:
+  dev-release:
+    name: Build and publish dev release assets
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Write dev manifest values
+        shell: pwsh
+        run: |
+          $repo = "${{ github.repository }}"
+          $tag = "dev"
+          $version = "999.0.${{ github.run_number }}"
+
+          $manifest = Get-Content module.json | ConvertFrom-Json
+          $manifest.version = $version
+          $manifest.url = "https://github.com/$repo"
+          $manifest.manifest = "https://github.com/$repo/releases/download/$tag/module.json"
+          $manifest.download = "https://github.com/$repo/releases/download/$tag/genefunk2090-dnd5e.zip"
+
+          $manifest | ConvertTo-Json -Depth 20 | Set-Content module.json -Encoding UTF8
+          Get-Content module.json
+
+      - name: Build release assets
+        shell: pwsh
+        run: .\tools\package-release.ps1
+
+      - name: Verify release zip
+        shell: pwsh
+        run: |
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $zip = [System.IO.Compression.ZipFile]::OpenRead((Resolve-Path "dist/genefunk2090-dnd5e.zip"))
+          try {
+            $names = $zip.Entries | Select-Object -ExpandProperty FullName
+            foreach ($required in @(
+              "module.json",
+              "README.md",
+              "scripts/main.js",
+              "styles/genefunk.css",
+              "source-import/starter-items.json",
+              "source-import/starter-actors.json"
+            )) {
+              if ($names -notcontains $required) {
+                throw "Release zip missing $required"
+              }
+            }
+
+            if ($names | Where-Object { $_ -like "packs/*" }) {
+              throw "Release zip unexpectedly contains packs/. Do not ship placeholder compendium folders."
+            }
+          }
+          finally {
+            $zip.Dispose()
+          }
+
+      - name: Publish dev GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: dev
+          name: Dev Build
+          body: |
+            Automated development build from `main`.
+
+            Commit: ${{ github.sha }}
+            Run: ${{ github.run_number }}
+          prerelease: true
+          make_latest: false
+          files: |
+            dist/module.json
+            dist/genefunk2090-dnd5e.zip
+          fail_on_unmatched_files: true
