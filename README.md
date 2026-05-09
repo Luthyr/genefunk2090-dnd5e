@@ -4,13 +4,13 @@ A Foundry VTT add-on module scaffold for using GeneFunk 2090-style cyberpunk/bio
 
 ## Current Status
 
-Version: 0.1.0 scaffold
+Version: 0.1.1 starter content pass
 
 This is an MVP foundation. It does not include copyrighted book text or extracted PDF content. It provides:
 
 - A valid Foundry module manifest
 - D&D 5e system dependency
-- Placeholder pack folders for future exported compendia
+- Placeholder class and gear/category compendium packs
 - Starter script hooks
 - Actor profile helper flags
 - Item categorization helper flags
@@ -57,7 +57,7 @@ dist/genefunk2090-dnd5e.zip
 After the release exists, use this manifest URL in Foundry:
 
 ```text
-https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.0/module.json
+https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.1/module.json
 ```
 
 Using the GitHub repository page URL or a release URL without uploaded assets will fail with an invalid manifest response. GitHub's `latest` release URL does not work for prereleases.
@@ -87,6 +87,11 @@ await GeneFunk2090.importStarterContent();
 ```
 
 This creates placeholder class Items for Biohacker, Codehacker, Crook, Engineer, Gunfighter, Hardcase, Samurai, and Suit, plus one placeholder Item for each starter category. These are not book text and do not contain real mechanics yet.
+
+On first GM activation, the module also seeds the module compendia:
+
+- **GeneFunk 2090 Classes**
+- **GeneFunk 2090 Gear and Categories**
 
 ## Starter Macros
 

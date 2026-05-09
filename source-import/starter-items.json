@@ -136,14 +136,14 @@
     }
   },
   {
-    "name": "Placeholder Hack",
+    "name": "Hacks",
     "type": "feat",
     "img": "icons/svg/aura.svg",
     "system": {
       "description": {
         "value": "<p>Placeholder hack item. Add table-approved mechanics later.</p>"
       },
-      "identifier": "placeholder-hack"
+      "identifier": "hacks"
     },
     "flags": {
       "genefunk2090-dnd5e": {
@@ -153,14 +153,14 @@
     }
   },
   {
-    "name": "Placeholder Cyberware",
+    "name": "Cyberware",
     "type": "equipment",
     "img": "icons/svg/upgrade.svg",
     "system": {
       "description": {
         "value": "<p>Placeholder cyberware item. Add table-approved mechanics later.</p>"
       },
-      "identifier": "placeholder-cyberware"
+      "identifier": "cyberware"
     },
     "flags": {
       "genefunk2090-dnd5e": {
@@ -170,14 +170,14 @@
     }
   },
   {
-    "name": "Placeholder Bioware",
+    "name": "Bioware",
     "type": "equipment",
     "img": "icons/svg/dna.svg",
     "system": {
       "description": {
         "value": "<p>Placeholder bioware item. Add table-approved mechanics later.</p>"
       },
-      "identifier": "placeholder-bioware"
+      "identifier": "bioware"
     },
     "flags": {
       "genefunk2090-dnd5e": {
@@ -187,14 +187,14 @@
     }
   },
   {
-    "name": "Placeholder Modern Weapon",
+    "name": "Modern Weapons",
     "type": "weapon",
     "img": "icons/svg/combat.svg",
     "system": {
       "description": {
         "value": "<p>Placeholder modern weapon item. Add table-approved mechanics later.</p>"
       },
-      "identifier": "placeholder-modern-weapon"
+      "identifier": "modern-weapons"
     },
     "flags": {
       "genefunk2090-dnd5e": {
@@ -204,14 +204,14 @@
     }
   },
   {
-    "name": "Placeholder Armor",
+    "name": "Armor",
     "type": "equipment",
     "img": "icons/svg/shield.svg",
     "system": {
       "description": {
         "value": "<p>Placeholder armor item. Add table-approved mechanics later.</p>"
       },
-      "identifier": "placeholder-armor"
+      "identifier": "armor"
     },
     "flags": {
       "genefunk2090-dnd5e": {
@@ -221,14 +221,14 @@
     }
   },
   {
-    "name": "Placeholder Drug",
+    "name": "Drugs",
     "type": "consumable",
     "img": "icons/svg/acid.svg",
     "system": {
       "description": {
         "value": "<p>Placeholder drug item. Add table-approved mechanics later.</p>"
       },
-      "identifier": "placeholder-drug"
+      "identifier": "drugs"
     },
     "flags": {
       "genefunk2090-dnd5e": {
@@ -238,14 +238,14 @@
     }
   },
   {
-    "name": "Placeholder Tool",
+    "name": "Tools",
     "type": "tool",
     "img": "icons/svg/gears.svg",
     "system": {
       "description": {
         "value": "<p>Placeholder tool item. Add table-approved mechanics later.</p>"
       },
-      "identifier": "placeholder-tool"
+      "identifier": "tools"
     },
     "flags": {
       "genefunk2090-dnd5e": {

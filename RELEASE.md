@@ -21,7 +21,7 @@ The `dist/` folder is intentionally ignored by Git. Upload these files as GitHub
 
 ## GitHub Release
 
-Create a public, non-draft GitHub release, for example `v0.1.0`, then attach exactly these two files:
+Create a public, non-draft GitHub release matching the `version` in `module.json`, for example `v0.1.1`, then attach exactly these two files:
 
 ```text
 dist/module.json
@@ -31,13 +31,13 @@ dist/genefunk2090-dnd5e.zip
 After upload, this URL must open or download JSON in a browser:
 
 ```text
-https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.0/module.json
+https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.1/module.json
 ```
 
 Foundry install URL:
 
 ```text
-https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.0/module.json
+https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.1/module.json
 ```
 
 If Foundry reports `Failed to fetch package manifest`, the release asset is missing, private, draft-only, or the URL is not reachable. The `releases/latest` URL only works for normal releases, not prereleases.
@@ -54,7 +54,8 @@ Commit and push the repository source files normally. The important release-supp
 - `styles/genefunk.css`
 - `lang/en.json`
 - `macros/`
+- `packs/`
 - `docs/`
 - `source-import/`
 
-Do not declare placeholder `packs/*` folders in `module.json` until they contain real Foundry compendium databases exported by Foundry.
+The starter compendia are seeded from `source-import/starter-items.json` on first GM activation. After editing entries in Foundry, export real compendium databases before replacing the source-driven placeholders.

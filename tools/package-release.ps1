@@ -13,6 +13,7 @@ $required = @(
   "docs",
   "lang",
   "macros",
+  "packs",
   "scripts",
   "source-import",
   "styles"

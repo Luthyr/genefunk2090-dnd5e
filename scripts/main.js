@@ -11,6 +11,8 @@
 
 const MODULE_ID = "genefunk2090-dnd5e";
 const ITEM_CATEGORIES = new Set(["hack", "cyberware", "bioware", "modern-weapon", "armor", "drug", "tool", "equipment"]);
+const STARTER_CLASS_PACK = `${MODULE_ID}.classes`;
+const STARTER_EQUIPMENT_PACK = `${MODULE_ID}.equipment`;
 
 Hooks.once("init", () => {
   console.log(`${MODULE_ID} | Initializing`);
@@ -51,6 +53,12 @@ Hooks.once("ready", () => {
 
   globalThis.GeneFunk2090 = createHelpers();
   globalThis.Genefunk2090 = globalThis.GeneFunk2090;
+
+  if (game.user?.isGM) {
+    seedStarterCompendia().catch((error) => {
+      console.warn(`${MODULE_ID} | Unable to seed starter compendia`, error);
+    });
+  }
 });
 
 /**
@@ -131,7 +139,8 @@ function createHelpers() {
     setActorProfile: setProfile,
     tagItem,
     printActorProfileToChat,
-    importStarterContent
+    importStarterContent,
+    seedStarterCompendia
   };
 }
 
@@ -168,10 +177,7 @@ async function tagItem(item, category = "equipment") {
 }
 
 async function importStarterContent() {
-  const response = await fetch(`modules/${MODULE_ID}/source-import/starter-items.json`);
-  if (!response.ok) throw new Error(`Unable to load starter content: ${response.status}`);
-
-  const items = await response.json();
+  const items = await loadStarterItems();
   const existingNames = new Set(game.items.contents.map((item) => item.name));
   const toCreate = items.filter((item) => !existingNames.has(item.name));
 
@@ -183,6 +189,51 @@ async function importStarterContent() {
   const created = await Item.createDocuments(toCreate);
   ui.notifications?.info(`Created ${created.length} GeneFunk starter items.`);
   return created;
+}
+
+async function seedStarterCompendia() {
+  const items = await loadStarterItems();
+  const classes = items.filter((item) => item.flags?.[MODULE_ID]?.contentType === "class");
+  const equipment = items.filter((item) => item.flags?.[MODULE_ID]?.category);
+
+  const created = [
+    ...(await seedPack(STARTER_CLASS_PACK, classes)),
+    ...(await seedPack(STARTER_EQUIPMENT_PACK, equipment))
+  ];
+
+  if (created.length) {
+    console.log(`${MODULE_ID} | Seeded ${created.length} placeholder compendium items.`);
+  }
+
+  return created;
+}
+
+async function seedPack(packId, documents) {
+  const pack = game.packs.get(packId);
+  if (!pack) {
+    console.warn(`${MODULE_ID} | Missing compendium pack: ${packId}`);
+    return [];
+  }
+
+  await pack.getIndex({ fields: ["name"] });
+  const existingNames = new Set([...pack.index].map((entry) => entry.name));
+  const toCreate = documents.filter((document) => !existingNames.has(document.name));
+  if (!toCreate.length) return [];
+
+  const wasLocked = pack.locked;
+  if (wasLocked) await pack.configure({ locked: false });
+
+  try {
+    return await Item.createDocuments(toCreate, { pack: pack.collection });
+  } finally {
+    if (wasLocked) await pack.configure({ locked: true });
+  }
+}
+
+async function loadStarterItems() {
+  const response = await fetch(`modules/${MODULE_ID}/source-import/starter-items.json`);
+  if (!response.ok) throw new Error(`Unable to load starter content: ${response.status}`);
+  return response.json();
 }
 
 async function printActorProfileToChat(actor = getSelectedActor()) {
