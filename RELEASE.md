@@ -21,7 +21,7 @@ The `dist/` folder is intentionally ignored by Git. Upload these files as GitHub
 
 ## GitHub Release
 
-Create a public, non-draft GitHub release matching the `version` in `module.json`, for example `v0.1.1`, then attach exactly these two files:
+Create a public, non-draft GitHub release matching the `version` in `module.json`, for example `v0.1.2`, then attach exactly these two files:
 
 ```text
 dist/module.json
@@ -31,13 +31,13 @@ dist/genefunk2090-dnd5e.zip
 After upload, this URL must open or download JSON in a browser:
 
 ```text
-https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.1/module.json
+https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.2/module.json
 ```
 
 Foundry install URL:
 
 ```text
-https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.1/module.json
+https://github.com/Luthyr/genefunk2090-dnd5e/releases/download/v0.1.2/module.json
 ```
 
 If Foundry reports `Failed to fetch package manifest`, the release asset is missing, private, draft-only, or the URL is not reachable. The `releases/latest` URL only works for normal releases, not prereleases.

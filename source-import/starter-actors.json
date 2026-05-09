@@ -1,0 +1,77 @@
+[
+  {
+    "name": "GeneFunk Placeholder NPC",
+    "type": "npc",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "details": {
+        "biography": {
+          "value": "<p>Placeholder NPC for testing GeneFunk flags, sheet display, and starter gear. No book text included.</p>"
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 11,
+          "max": 11
+        },
+        "ac": {
+          "flat": 12
+        }
+      }
+    },
+    "prototypeToken": {
+      "name": "GeneFunk Placeholder NPC",
+      "actorLink": false
+    },
+    "items": [],
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "profile": {
+          "genotype": "Placeholder Genotype",
+          "occupation": "Placeholder Contact",
+          "faction": "Placeholder Faction",
+          "credits": 25,
+          "cyberwareLoad": 0,
+          "notes": "Sample NPC profile for testing only."
+        },
+        "placeholder": true
+      }
+    }
+  },
+  {
+    "name": "GeneFunk Placeholder PC",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "details": {
+        "biography": {
+          "value": "<p>Placeholder player character for testing the Gunfighter class shell and GeneFunk actor panel. No book text included.</p>"
+        }
+      },
+      "attributes": {
+        "hp": {
+          "value": 12,
+          "max": 12
+        }
+      }
+    },
+    "prototypeToken": {
+      "name": "GeneFunk Placeholder PC",
+      "actorLink": true
+    },
+    "items": [],
+    "flags": {
+      "genefunk2090-dnd5e": {
+        "profile": {
+          "genotype": "Placeholder Genotype",
+          "occupation": "Gunfighter",
+          "faction": "Placeholder Faction",
+          "credits": 100,
+          "cyberwareLoad": 1,
+          "notes": "Sample PC profile for testing only."
+        },
+        "placeholder": true
+      }
+    }
+  }
+]

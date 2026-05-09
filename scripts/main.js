@@ -13,6 +13,7 @@ const MODULE_ID = "genefunk2090-dnd5e";
 const ITEM_CATEGORIES = new Set(["hack", "cyberware", "bioware", "modern-weapon", "armor", "drug", "tool", "equipment"]);
 const STARTER_CLASS_PACK = `${MODULE_ID}.classes`;
 const STARTER_EQUIPMENT_PACK = `${MODULE_ID}.equipment`;
+const STARTER_ACTOR_PACK = `${MODULE_ID}.actors`;
 
 Hooks.once("init", () => {
   console.log(`${MODULE_ID} | Initializing`);
@@ -67,10 +68,12 @@ Hooks.once("ready", () => {
  */
 Hooks.on("renderActorSheet", (app, html) => {
   injectActorBadge(app, html);
+  injectActorPanel(app, html);
 });
 
 Hooks.on("renderActorSheetV2", (app, element) => {
   injectActorBadge(app, element);
+  injectActorPanel(app, element);
 });
 
 Hooks.on("renderItemSheet", (app, html) => {
@@ -106,6 +109,47 @@ function injectActorBadge(app, html) {
   if (target) target.prepend(badge);
 }
 
+function injectActorPanel(app, html) {
+  if (!game.settings.get(MODULE_ID, "showSheetBadges")) return;
+
+  const actor = app.actor ?? app.document;
+  if (!actor || !["character", "npc"].includes(actor.type)) return;
+
+  const root = getRootElement(html);
+  if (!root || root.querySelector(".genefunk-actor-panel")) return;
+
+  const profile = getProfile(actor);
+  const panel = document.createElement("section");
+  panel.className = "genefunk-actor-panel";
+  panel.innerHTML = `
+    <header>
+      <strong>GeneFunk</strong>
+      <span>Profile</span>
+    </header>
+    <div class="genefunk-profile-grid">
+      <label>Genotype <input type="text" name="genotype" value="${escapeAttribute(profile.genotype || "")}"></label>
+      <label>Occupation <input type="text" name="occupation" value="${escapeAttribute(profile.occupation || "")}"></label>
+      <label>Faction <input type="text" name="faction" value="${escapeAttribute(profile.faction || "")}"></label>
+      <label>Credits <input type="number" name="credits" value="${Number(profile.credits || 0)}"></label>
+      <label>Cyberware Load <input type="number" name="cyberwareLoad" value="${Number(getCyberwareLoad(actor, profile))}"></label>
+    </div>
+  `;
+
+  panel.addEventListener("change", async (event) => {
+    const input = event.target;
+    if (!(input instanceof HTMLInputElement)) return;
+
+    const next = {
+      ...getProfile(actor),
+      [input.name]: input.type === "number" ? Number(input.value || 0) : input.value
+    };
+    await setProfile(actor, next);
+  });
+
+  const target = root.querySelector(".window-content form") || root.querySelector(".window-content") || root.querySelector("form") || root;
+  target.prepend(panel);
+}
+
 /**
  * Adds a lightweight item sheet note for GeneFunk-tagged items.
  */
@@ -120,6 +164,14 @@ function injectItemNote(app, html) {
   const note = document.createElement("div");
   note.classList.add("genefunk-item-note");
   note.innerHTML = `<strong>GeneFunk Category:</strong> ${escapeHtml(category)}`;
+
+  if (category === "modern-weapon") {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = "Spend Ammo";
+    button.addEventListener("click", () => spendAmmo(item));
+    note.append(button);
+  }
 
   const target = root.querySelector(".window-content form") || root.querySelector(".window-content") || root.querySelector("form") || root;
   if (target) target.prepend(note);
@@ -140,7 +192,8 @@ function createHelpers() {
     tagItem,
     printActorProfileToChat,
     importStarterContent,
-    seedStarterCompendia
+    seedStarterCompendia,
+    spendAmmo
   };
 }
 
@@ -176,6 +229,27 @@ async function tagItem(item, category = "equipment") {
   return normalized;
 }
 
+async function spendAmmo(item) {
+  if (!item) throw new Error("No item provided.");
+
+  const usesValue = Number(foundry.utils.getProperty(item, "system.uses.value"));
+  if (Number.isFinite(usesValue) && usesValue > 0) {
+    await item.update({ "system.uses.value": usesValue - 1 });
+    ui.notifications?.info(`${item.name} ammo: ${usesValue - 1}`);
+    return usesValue - 1;
+  }
+
+  const quantity = Number(foundry.utils.getProperty(item, "system.quantity"));
+  if (Number.isFinite(quantity) && quantity > 0) {
+    await item.update({ "system.quantity": quantity - 1 });
+    ui.notifications?.info(`${item.name} quantity: ${quantity - 1}`);
+    return quantity - 1;
+  }
+
+  ui.notifications?.warn(`${item.name} has no ammo or quantity remaining.`);
+  return 0;
+}
+
 async function importStarterContent() {
   const items = await loadStarterItems();
   const existingNames = new Set(game.items.contents.map((item) => item.name));
@@ -193,12 +267,14 @@ async function importStarterContent() {
 
 async function seedStarterCompendia() {
   const items = await loadStarterItems();
+  const actors = await loadStarterActors();
   const classes = items.filter((item) => item.flags?.[MODULE_ID]?.contentType === "class");
   const equipment = items.filter((item) => item.flags?.[MODULE_ID]?.category);
 
   const created = [
     ...(await seedPack(STARTER_CLASS_PACK, classes)),
-    ...(await seedPack(STARTER_EQUIPMENT_PACK, equipment))
+    ...(await seedPack(STARTER_EQUIPMENT_PACK, equipment)),
+    ...(await seedPack(STARTER_ACTOR_PACK, actors, Actor))
   ];
 
   if (created.length) {
@@ -208,7 +284,7 @@ async function seedStarterCompendia() {
   return created;
 }
 
-async function seedPack(packId, documents) {
+async function seedPack(packId, documents, documentClass = Item) {
   const pack = game.packs.get(packId);
   if (!pack) {
     console.warn(`${MODULE_ID} | Missing compendium pack: ${packId}`);
@@ -224,7 +300,7 @@ async function seedPack(packId, documents) {
   if (wasLocked) await pack.configure({ locked: false });
 
   try {
-    return await Item.createDocuments(toCreate, { pack: pack.collection });
+    return await documentClass.createDocuments(toCreate, { pack: pack.collection });
   } finally {
     if (wasLocked) await pack.configure({ locked: true });
   }
@@ -233,6 +309,12 @@ async function seedPack(packId, documents) {
 async function loadStarterItems() {
   const response = await fetch(`modules/${MODULE_ID}/source-import/starter-items.json`);
   if (!response.ok) throw new Error(`Unable to load starter content: ${response.status}`);
+  return response.json();
+}
+
+async function loadStarterActors() {
+  const response = await fetch(`modules/${MODULE_ID}/source-import/starter-actors.json`);
+  if (!response.ok) throw new Error(`Unable to load starter actors: ${response.status}`);
   return response.json();
 }
 
@@ -263,11 +345,19 @@ function normalizeProfile(profile = {}) {
   return {
     genotype: String(profile.genotype ?? profile.archetype ?? ""),
     occupation: String(profile.occupation ?? profile.origin ?? ""),
+    faction: String(profile.faction ?? ""),
+    credits: Number(profile.credits ?? 0),
+    cyberwareLoad: Number(profile.cyberwareLoad ?? 0),
     archetype: String(profile.archetype ?? profile.genotype ?? ""),
     origin: String(profile.origin ?? profile.occupation ?? ""),
     background: String(profile.background ?? profile.faction ?? ""),
     notes: String(profile.notes ?? "")
   };
+}
+
+function getCyberwareLoad(actor, profile = getProfile(actor)) {
+  if (Number(profile.cyberwareLoad)) return Number(profile.cyberwareLoad);
+  return actor.items?.contents?.filter((item) => item.getFlag(MODULE_ID, "category") === "cyberware").length ?? 0;
 }
 
 function labelize(key) {
@@ -284,4 +374,8 @@ function escapeHtml(value) {
   const div = document.createElement("div");
   div.textContent = value;
   return div.innerHTML;
+}
+
+function escapeAttribute(value) {
+  return escapeHtml(String(value)).replace(/"/g, "&quot;");
 }

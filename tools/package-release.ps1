@@ -31,6 +31,7 @@ foreach ($path in $required) {
 Get-Content (Join-Path $root "module.json") | ConvertFrom-Json | Out-Null
 Get-Content (Join-Path $root "lang/en.json") | ConvertFrom-Json | Out-Null
 Get-Content (Join-Path $root "source-import/starter-items.json") | ConvertFrom-Json | Out-Null
+Get-Content (Join-Path $root "source-import/starter-actors.json") | ConvertFrom-Json | Out-Null
 
 $pathsToZip = $required | ForEach-Object { Join-Path $root $_ }
 Compress-Archive -Path $pathsToZip -DestinationPath $zipPath -Force

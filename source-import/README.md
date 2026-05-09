@@ -23,3 +23,4 @@ The JSON in this folder is not a Foundry compendium database and should not be d
 Current files:
 
 - `starter-items.json`: placeholder class Items and placeholder category Items with no copyrighted book text.
+- `starter-actors.json`: one placeholder NPC and one placeholder player character for testing flags and sheet display.

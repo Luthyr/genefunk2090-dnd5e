@@ -28,3 +28,40 @@
   border-left: 3px solid rgba(0, 200, 170, 0.8);
   background: rgba(0, 200, 170, 0.08);
 }
+
+.genefunk-item-note button {
+  margin-left: 0.5rem;
+}
+
+.genefunk-actor-panel {
+  margin: 0 0 0.6rem 0;
+  padding: 0.5rem;
+  border: 1px solid rgba(0, 200, 170, 0.45);
+  border-radius: 6px;
+  background: rgba(0, 200, 170, 0.06);
+}
+
+.genefunk-actor-panel header {
+  display: flex;
+  gap: 0.4rem;
+  align-items: baseline;
+  margin-bottom: 0.45rem;
+}
+
+.genefunk-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.4rem;
+}
+
+.genefunk-profile-grid label {
+  display: grid;
+  gap: 0.15rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.genefunk-profile-grid input {
+  width: 100%;
+  min-width: 0;
+}

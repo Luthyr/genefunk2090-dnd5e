@@ -14,6 +14,9 @@ Stores table-authored GeneFunk profile metadata for an actor.
 {
   "genotype": "Placeholder genotype",
   "occupation": "Placeholder occupation",
+  "faction": "Placeholder faction",
+  "credits": 100,
+  "cyberwareLoad": 1,
   "archetype": "GeneFunk Profile",
   "origin": "Placeholder origin",
   "background": "Placeholder background",
@@ -25,6 +28,7 @@ Expected use:
 
 - Display a compact sheet badge when the setting is enabled.
 - Print a summary to chat with the starter macro or console helper.
+- Display and edit the lightweight GeneFunk actor panel.
 - Provide future hooks for non-invasive dnd5e add-on behavior.
 
 Do not store copyrighted book text here in distributed examples. Use local table notes, short labels, or references to legally owned content.
@@ -76,6 +80,8 @@ Example:
 ```
 
 The item remains a normal dnd5e item. Damage formulas, activation, uses, equipment state, and rolls should continue to use dnd5e fields unless a later feature has a documented reason to add a flag.
+
+Modern firearm placeholders use normal dnd5e `system.uses.value` for simple ammunition tracking. The helper `GeneFunk2090.spendAmmo(item)` decrements uses first, then falls back to `system.quantity`.
 
 ## Settings
 
