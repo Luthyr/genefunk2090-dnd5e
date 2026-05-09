@@ -57,7 +57,7 @@ dist/genefunk2090-dnd5e.zip
 After the release exists, use this manifest URL in Foundry:
 
 ```text
-https://github.com/mosio/genefunk2090/releases/latest/download/module.json
+https://github.com/Luthyr/genefunk2090-dnd5e/releases/latest/download/module.json
 ```
 
 Using the GitHub repository page URL or a release URL without uploaded assets will fail with an invalid manifest response.
